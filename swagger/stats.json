@@ -1,0 +1,118 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/stats/active-users": {
+      "get": {
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The amount of active users was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "default": 100,
+              "type": "number"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:stats"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "The amount of active users",
+        "operationId": "get_active-users",
+        "summary": "Get active users count"
+      }
+    },
+    "/api/v2/stats/daily": {
+      "get": {
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The first day of the period (inclusive) in YYYYMMDD format.",
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "description": "The last day of the period (inclusive) in YYYYMMDD format.",
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The stats were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_daily_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "'from' date cannot be greater than 'to' date"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:stats"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves the number of logins that occurred in the entered date range.",
+        "operationId": "get_daily",
+        "summary": "Get daily stats"
+      }
+    }
+  },
+  "definitions": {
+    "get_daily_response": {
+      "properties": {
+        "date": {
+          "default": "2014-01-01T05:00:00.000Z",
+          "description": "The date to which the stats belong",
+          "type": "string"
+        },
+        "logins": {
+          "default": 100,
+          "description": "The amount of logins on the date",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

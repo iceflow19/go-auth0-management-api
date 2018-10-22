@@ -1,0 +1,642 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/custom-domains": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The custom domains configurations were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_custom-domains_response"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "The account is not allowed to perform this operation."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves the status of every custom domain.\n",
+        "operationId": "get_custom-domains",
+        "summary": "Get custom domains configurations"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_custom-domains_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_custom-domains_response"
+            }
+          },
+          "201": {
+            "description": "The custom domain was created (but verification is pending). See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "The account is not allowed to perform this operation."
+          },
+          "409": {
+            "description": "You reached the maximum number of custom domains for your account."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Creates a new custom domain and returns it.\n\nThe custom domain will need to be verified before it starts accepting requests.\n\n<a href=\"https://auth0.com/docs/custom-domains\">Learn more about Custom Domains</a>",
+        "operationId": "post_custom-domains",
+        "summary": "Configure a new custom domain"
+      }
+    },
+    "/api/v2/custom-domains/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the custom domain to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The custom domain configuration was deleted."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "The account is not allowed to perform this operation."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Deletes a custom domain by its <code>ID</code>. We will stop serving requests for this domain.\n",
+        "operationId": "delete_custom-domains_by_id",
+        "summary": "Delete custom domain configuration"
+      },
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the custom domain to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The custom domain was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_custom-domains_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "The account is not allowed to perform this operation."
+          },
+          "404": {
+            "description": "The custom domain does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a custom domain status by its <code>ID</code>.\n",
+        "operationId": "get_custom-domains_by_id",
+        "summary": "Get custom domain configuration"
+      }
+    },
+    "/api/v2/custom-domains/{id}/verify": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the custom domain to verify",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The custom domain verification failed.",
+            "schema": {
+              "$ref": "#/definitions/post_verify_response"
+            }
+          },
+          "400": {
+            "description": "The specified custom domain is already verified."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "The account is not allowed to perform this operation."
+          },
+          "404": {
+            "description": "The custom domain does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Run the verification process for the custom domain. Check the <code>status</code> field to see its verification status.\n\nOnce the verification is complete, it might take up to 10 minutes before the custom domain can start accepting requests.\n\nFor <code>self_managed_certs</code>, when the custom domain is verified for the first time, the response will also include the <code>cname_api_key</code> which you will need to configure your proxy. This key must be kept secret, and is used to validate the proxy requests.\n\n<a href=\"https://auth0.com/docs/custom-domains#step-2-verify-ownership\">Learn more</a> about verifying custom domains that use Auth0 Managed certificates.\n<a href=\"https://auth0.com/docs/custom-domains/self-managed-certificates#step-2-verify-ownership\">Learn more</a> about verifying custom domains that use Self Managed certificates.\n\n\n",
+        "operationId": "post_verify",
+        "summary": "Verify a custom domain"
+      }
+    }
+  },
+  "definitions": {
+    "get_custom-domains_by_id_response": {
+      "properties": {
+        "custom_domain_id": {
+          "default": "cd_0000000000000001",
+          "description": "The id of the custom domain.",
+          "type": "string"
+        },
+        "domain": {
+          "default": "login.mycompany.com",
+          "description": "The custom domain.",
+          "type": "string"
+        },
+        "origin_domain_name": {
+          "default": "mycompany_cd_0000000000000001.edge.tenants.auth0.com",
+          "description": "The intermediate address.",
+          "type": "string"
+        },
+        "primary": {
+          "default": false,
+          "description": "<code>true</code> if the domain was marked as \"primary\", <code>false</code> otherwise.",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "ready",
+          "description": "The custom domain configuration status.",
+          "enum": [
+            "disabled",
+            "pending",
+            "pending_verification",
+            "ready"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "default": "self_managed_certs",
+          "description": "The custom domain provisioning type.",
+          "enum": [
+            "auth0_managed_certs",
+            "self_managed_certs"
+          ],
+          "type": "string"
+        },
+        "verification": {
+          "$ref": "#/definitions/get_custom-domains_by_id_response_verification"
+        }
+      },
+      "required": [
+        "custom_domain_id",
+        "domain",
+        "primary",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "get_custom-domains_by_id_response_verification": {
+      "description": "The custom domain verification settings.",
+      "properties": {
+        "methods": {
+          "description": "The custom domain verification methods.",
+          "items": {
+            "properties": {
+              "name": {
+                "default": "txt",
+                "description": "The custom domain verification method.",
+                "enum": [
+                  "cname",
+                  "txt"
+                ],
+                "type": "string"
+              },
+              "record": {
+                "default": "auth0-domain-verification=...",
+                "description": "The value used to verify the custom domain.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "record"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "get_custom-domains_response": {
+      "properties": {
+        "custom_domain_id": {
+          "default": "cd_0000000000000001",
+          "description": "The id of the custom domain.",
+          "type": "string"
+        },
+        "domain": {
+          "default": "login.mycompany.com",
+          "description": "The custom domain.",
+          "type": "string"
+        },
+        "origin_domain_name": {
+          "default": "mycompany_cd_0000000000000001.edge.tenants.auth0.com",
+          "description": "The intermediate address.",
+          "type": "string"
+        },
+        "primary": {
+          "default": false,
+          "description": "<code>true</code> if the domain was marked as \"primary\", <code>false</code> otherwise.",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "ready",
+          "description": "The custom domain configuration status.",
+          "enum": [
+            "disabled",
+            "pending",
+            "pending_verification",
+            "ready"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "default": "self_managed_certs",
+          "description": "The custom domain provisioning type.",
+          "enum": [
+            "auth0_managed_certs",
+            "self_managed_certs"
+          ],
+          "type": "string"
+        },
+        "verification": {
+          "$ref": "#/definitions/get_custom-domains_response_verification"
+        }
+      },
+      "required": [
+        "custom_domain_id",
+        "domain",
+        "primary",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "get_custom-domains_response_verification": {
+      "description": "The custom domain verification settings.",
+      "properties": {
+        "methods": {
+          "description": "The custom domain verification methods.",
+          "items": {
+            "properties": {
+              "name": {
+                "default": "txt",
+                "description": "The custom domain verification method.",
+                "enum": [
+                  "cname",
+                  "txt"
+                ],
+                "type": "string"
+              },
+              "record": {
+                "default": "auth0-domain-verification=...",
+                "description": "The value used to verify the custom domain.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "record"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_custom-domains_body": {
+      "properties": {
+        "domain": {
+          "description": "Your custom domain.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The custom domain provisioning type.",
+          "enum": [
+            "auth0_managed_certs",
+            "self_managed_certs"
+          ],
+          "type": "string"
+        },
+        "verification_method": {
+          "default": "txt",
+          "description": "The custom domain verification method.",
+          "enum": [
+            "txt"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "domain",
+        "type"
+      ],
+      "type": "object"
+    },
+    "post_custom-domains_response": {
+      "properties": {
+        "custom_domain_id": {
+          "default": "cd_0000000000000001",
+          "description": "The id of the custom domain.",
+          "type": "string"
+        },
+        "domain": {
+          "default": "login.mycompany.com",
+          "description": "The custom domain.",
+          "type": "string"
+        },
+        "primary": {
+          "default": false,
+          "description": "<code>true</code> if the domain was marked as \"primary\", <code>false</code> otherwise.",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "ready",
+          "description": "The custom domain configuration status.",
+          "enum": [
+            "disabled",
+            "pending",
+            "pending_verification",
+            "ready"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "default": "self_managed_certs",
+          "description": "The custom domain provisioning type.",
+          "enum": [
+            "auth0_managed_certs",
+            "self_managed_certs"
+          ],
+          "type": "string"
+        },
+        "verification": {
+          "$ref": "#/definitions/post_custom-domains_response_verification"
+        }
+      },
+      "required": [
+        "custom_domain_id",
+        "domain",
+        "primary",
+        "status",
+        "type",
+        "verification"
+      ],
+      "type": "object"
+    },
+    "post_custom-domains_response_verification": {
+      "description": "The custom domain verification settings.",
+      "properties": {
+        "methods": {
+          "description": "The custom domain verification methods.",
+          "items": {
+            "properties": {
+              "name": {
+                "default": "txt",
+                "description": "The custom domain verification method.",
+                "enum": [
+                  "cname",
+                  "txt"
+                ],
+                "type": "string"
+              },
+              "record": {
+                "default": "auth0-domain-verification=...",
+                "description": "The value used to verify the custom domain.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "record"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_verify_response": {
+      "properties": {
+        "cname_api_key": {
+          "default": "d4feca...",
+          "description": "The cname api key header.",
+          "type": "string"
+        },
+        "custom_domain_id": {
+          "default": "cd_0000000000000001",
+          "description": "The id of the custom domain.",
+          "type": "string"
+        },
+        "domain": {
+          "default": "login.mycompany.com",
+          "description": "The custom domain.",
+          "type": "string"
+        },
+        "origin_domain_name": {
+          "default": "mycompany_cd_0000000000000001.edge.tenants.auth0.com",
+          "description": "The intermediate address.",
+          "type": "string"
+        },
+        "primary": {
+          "default": false,
+          "description": "<code>true</code> if the domain was marked as \"primary\", <code>false</code> otherwise.",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "ready",
+          "description": "The custom domain configuration status.",
+          "enum": [
+            "disabled",
+            "pending",
+            "pending_verification",
+            "ready"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "default": "self_managed_certs",
+          "description": "The custom domain provisioning type.",
+          "enum": [
+            "auth0_managed_certs",
+            "self_managed_certs"
+          ],
+          "type": "string"
+        },
+        "verification": {
+          "$ref": "#/definitions/post_verify_response_verification"
+        }
+      },
+      "required": [
+        "custom_domain_id",
+        "domain",
+        "primary",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "post_verify_response_verification": {
+      "description": "The custom domain verification settings.",
+      "properties": {
+        "methods": {
+          "description": "The custom domain verification methods.",
+          "items": {
+            "properties": {
+              "name": {
+                "default": "txt",
+                "description": "The custom domain verification method.",
+                "enum": [
+                  "cname",
+                  "txt"
+                ],
+                "type": "string"
+              },
+              "record": {
+                "default": "auth0-domain-verification=...",
+                "description": "The value used to verify the custom domain.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "record"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

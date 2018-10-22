@@ -1,0 +1,209 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/tickets/email-verification": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_email-verification_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_email-verification_response"
+            }
+          },
+          "201": {
+            "description": "The ticket was created."
+          },
+          "400": {
+            "description": "The connection with id {connection_id} does not exist"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:user_tickets"
+          },
+          "404": {
+            "description": "The user does not exist"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "This endpoint can be used to create a ticket to verify a user's email.\n\nLearn more about <a href=\"https://auth0.com/docs/email/custom#verification-email\">Verification Emails.</a> ",
+        "operationId": "post_email-verification",
+        "summary": "Create an email verification ticket"
+      }
+    },
+    "/api/v2/tickets/password-change": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_password-change_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_password-change_response"
+            }
+          },
+          "201": {
+            "description": "The ticket was created."
+          },
+          "400": {
+            "description": "The connection with id {connection_id} does not exist"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:user_tickets"
+          },
+          "404": {
+            "description": "The user does not exist"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "This endpoint can be used to create a password change ticket for a user.\n\nLearn more about different ways to <a href=\"https://auth0.com/docs/connections/database/password-change\">Change a User's Password.</a> ",
+        "operationId": "post_password-change",
+        "summary": "Create a password change ticket"
+      }
+    }
+  },
+  "definitions": {
+    "post_email-verification_body": {
+      "properties": {
+        "result_url": {
+          "default": "http://myapp.com/callback",
+          "description": "The user will be redirected to this endpoint once the ticket is used",
+          "format": "url",
+          "type": "string"
+        },
+        "ttl_sec": {
+          "description": "The ticket's lifetime in seconds starting from the moment of creation. After expiration, the ticket cannot be used to verify the user's email. If not specified or if you send 0, the Auth0 default lifetime of five days will be applied",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "user_id": {
+          "description": "The user_id of for which the ticket is to be created",
+          "format": "user-id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "post_email-verification_response": {
+      "properties": {
+        "ticket": {
+          "default": "https://login.auth0.com/lo/verify_email?client_id=nsaPS2p3cargoFy82WT7betaOPOt3qSh&tenant=mdocs&bewit=bmNlR01CcDNOUE1GeXVzODJXVDdyY1RUT1BPdDNxU2hcMTQzMDY2MjE4MVxuRTcxM0RSeUNlbEpzUUJmaFVaS3A1NEdJbWFzSUZMYzRTdEFtY2NMMXhZPVx7ImVtYWloojoiZGFtaWtww2NoQGhvdG1haWwuY29tIiwidGVuYW50IjoiZHNjaGVua2tjwWFuIiwiY2xpZW50X2lkIjoibmNlR01CcDNOUE1GeXVzODJXVDdyY1RUT1BPiiqxU2giLCJjb25uZWN0aW9uIjoiRGFtaWmsdiwicmVzdWx0VXJsIjoiIn0",
+          "description": "The URL that represents the ticket",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ticket"
+      ],
+      "type": "object"
+    },
+    "post_password-change_body": {
+      "properties": {
+        "connection_id": {
+          "default": "con_0000000000000001",
+          "description": "The connection that provides the identity for which the password is to be changed. If sending this parameter, the email is also required and the user_id is invalid",
+          "type": "string"
+        },
+        "email": {
+          "description": "The user's email",
+          "format": "email",
+          "type": "string"
+        },
+        "result_url": {
+          "default": "http://myapp.com/callback",
+          "description": "The user will be redirected to this endpoint once the ticket is used",
+          "format": "url",
+          "type": "string"
+        },
+        "ttl_sec": {
+          "description": "The ticket's lifetime in seconds starting from the moment of creation. After expiration, the ticket cannot be used to change the user's password. If not specified or if you send 0, the Auth0 default lifetime of 5 days will be applied",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "user_id": {
+          "description": "The user_id of for which the ticket is to be created",
+          "format": "user-id",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_password-change_response": {
+      "properties": {
+        "ticket": {
+          "default": "https://login.auth0.com/lo/reset?client_id=nsaPS2p3cargoFy82WT7betaOPOt3qSh&tenant=mdocs&bewit=bmNlR01CcDNOUE1GeXVzODJXVDdyY1RUT1BPdDNxU2hcMTQzMDY2MjE4MVxuRTcxM0RSeUNlbEpzUUJmaFVaS3A1NEdJbWFzSUZMYzRTdEFtY2NMMXhZPVx7ImVtYWloojoiZGFtaWtww2NoQGhvdG1haWwuY29tIiwidGVuYW50IjoiZHNjaGVua2tjwWFuIiwiY2xpZW50X2lkIjoibmNlR01CcDNOUE1GeXVzODJXVDdyY1RUT1BPiiqxU2giLCJjb25uZWN0aW9uIjoiRGFtaWmsdiwicmVzdWx0VXJsIjoiIn0",
+          "description": "The URL that represents the ticket",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ticket"
+      ],
+      "type": "object"
+    }
+  }
+}

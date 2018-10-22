@@ -1,0 +1,174 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/grants": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The amount of entries per page. Default: no paging is used, all grants are returned",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 1,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "The page number. Zero based",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "true if a query summary must be included in the result, false otherwise. Default <code>false</code>.",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "The user_id of the grants to retrieve",
+            "in": "query",
+            "name": "user_id",
+            "type": "string"
+          },
+          {
+            "description": "The client_id of the grants to retrieve",
+            "in": "query",
+            "name": "client_id",
+            "type": "string"
+          },
+          {
+            "description": "The audience of the grants to retrieve",
+            "in": "query",
+            "name": "audience",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The grants were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_grants_response"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:grants"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Manage the <a href=\"https://auth0.com/docs/api-auth/which-oauth-flow-to-use\">grants</a> associated with your account. \n",
+        "operationId": "get_grants",
+        "summary": "Get grants"
+      }
+    },
+    "/api/v2/grants/{id": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the grant to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The user_id of the grants to delete",
+            "in": "query",
+            "name": "user_id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The user grant no longer exists."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:grants"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "delete_grants_by_id?",
+        "summary": "Delete a grant"
+      }
+    }
+  },
+  "definitions": {
+    "get_grants_response": {
+      "properties": {
+        "audience": {
+          "description": "The grant's audience.",
+          "type": "string"
+        },
+        "clientID": {
+          "description": "The id of the client.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the grant.",
+          "type": "string"
+        },
+        "scope": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "user_id": {
+          "description": "The id of the user.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

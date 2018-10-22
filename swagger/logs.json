@@ -1,0 +1,265 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/logs": {
+      "get": {
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The page number. Zero based",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "The amount of entries per page. Default: <code>50</code>. Max value: <code>100</code>",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 0,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "The field to use for sorting. Use <code>field:order</code> where order is <code>1</code> for ascending and <code>-1</code> for descending. For example <code>date:-1</code>",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise. Defaults to <code>true</code>",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          },
+          {
+            "description": "true if a query summary must be included in the result, false otherwise. Default <code>false</code>.",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "Log Event Id to start retrieving logs. You can limit the amount of logs using the <code>take</code> parameter.",
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "description": "The total amount of entries to retrieve when using the <code>from</code> parameter. Default: <code>50</code>. Max value: <code>100</code>",
+            "in": "query",
+            "maximum": 100,
+            "name": "take",
+            "type": "integer"
+          },
+          {
+            "description": "Query in <a target='_new' href ='http://www.lucenetutorial.com/lucene-query-syntax.html'>Lucene query string syntax</a>.",
+            "in": "query",
+            "name": "q",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The log was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_logs_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:logs"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves log entries that match the specified search criteria (or list all entries if no criteria is used).<br/>You can search with a criteria using the <code>q</code> parameter or you can search by a specific log ID (search by checkpoint):<br/><br/><h5>The search by criteria can use the following parameters:</h5><ul> <li><b>q:</b> Search Criteria using <a href=\"https://auth0.com/docs/users/search/v2/query-syntax\">Query String Syntax</a></li><li><b>page:</b> The page number. Zero based</li><li><b>per_page:</b> The amount of entries per page</li><li><b>sort:</b> The field to use for sorting. Use <code>field:order</code>, where order is <code>1</code> for ascending and <code>-1</code> for descending. For example <code>date:-1</code></li><li><b>fields:</b> A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields</li><li><b>include_fields:</b> <code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise. Defaults to <code>true</code></li><li><b>include_totals:</b> <code>true</code> if a query summary must be included in the result, false otherwise. Default <code>false</code>.</li></ul><h5>The search by checkpoint use the following parameters:</h5><ul> <li><b>from:</b> Log Event Id to start retrieving logs. You can limit the amount of logs using the <code>take</code> parameter. If you use <code>from</code> at the same time as <code>q</code>, <code>from</code> takes precedence and <code>q</code> is ignored.</li><li><b>take:</b> The total amount of entries to retrieve when using the <code>from</code> parameter.</li></ul><p><strong>Important:</strong> When fetching logs by checkpoint, the order by date is not guaranteed</p>\n<h5>Event acronym mapping</h5><ul><li>s: Success Login </li><li>ssa: Success Silent Auth</li><li>fsa: Failed Silent Auth</li><li>seacft: Success Exchange (Authorization Code for Access Token)</li><li>feacft: Failed Exchange (Authorization Code for Access Token)</li><li>seccft: Success Exchange (Client Credentials for Access Token)</li><li>feccft: Failed Exchange (Client Credentials for Access Token)</li><li>sepft: Success Exchange (Password for Access Token)</li><li>fepft: Failed Exchange (Password for Access Token)</li><li>f: Failed Login </li><li>w: Warnings During Login </li><li>du: Deleted User </li><li>fu: Failed Login (invalid email/username) </li><li>fp: Failed Login (wrong password) </li><li>fc: Failed by Connector </li><li>fco: Failed by CORS </li><li>con: Connector Online </li><li>coff: Connector Offline </li><li>fcpro: Failed Connector Provisioning </li><li>ss: Success Signup </li><li>fs: Failed Signup </li><li>cs: Code Sent </li><li>cls: Code/Link Sent </li><li>sv: Success Verification Email </li><li>fv: Failed Verification Email </li><li>scp: Success Change Password </li><li>fcp: Failed Change Password </li><li>sce: Success Change Email </li><li>fce: Failed Change Email </li><li>scu: Success Change Username </li><li>fcu: Failed Change Username </li><li>scpn: Success Change Phone Number </li><li>fcpn: Failed Change Phone Number </li><li>svr: Success Verification Email Request </li><li>fvr: Failed Verification Email Request </li><li>scpr: Success Change Password Request </li><li>fcpr: Failed Change Password Request </li><li>fn: Failed Sending Notification </li><li>sapi: API Operation </li><li>fapi: Failed API Operation </li><li>limit_wc: Blocked Account </li><li>limit_mu: Blocked IP Address </li><li>limit_ui: Too Many Calls to /userinfo </li><li>api_limit: Rate Limit On API </li><li>sdu: Successful User Deletion </li><li>fdu: Failed User Deletion </li><li>slo: Success Logout</li><li>flo: Failed Logout</li><li>sd: Success Delegation</li><li>fd: Failed Delegation</li><li>fcoa: Failed Cross Origin Authentication</li><li>scoa: Success Cross Origin Authentication</li></ul>\n<h5>List of fields that can be used in fields and sort</h5><ul><li>date: The moment when the event occured.</li><li>connection: The connection related to the event.</li><li>client_id: The client id related to the event</li><li>client_name: The name of the client related to the event.</li><li>ip: The IP address from where the request that caused the log entry originated.</li><li>user_id: The user id related to the event.</li><li>user_name: The user name related to the event.</li><li>description: The description of the event.</li><li>user_agent: The user agent that is related to the event.</li><li>type: The event type. Refer to the event acronym mappings above for a list of possible event types.</li><li>details: The details object of the event.</li><li>strategy: The connection strategy related to the event.</li><li>strategy_type: The connection strategy type related to the event.</li></ul>",
+        "operationId": "get_logs",
+        "summary": "Search log events"
+      }
+    },
+    "/api/v2/logs/{id}": {
+      "get": {
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The log_id of the log to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The log was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_logs_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:logs"
+          },
+          "404": {
+            "description": "The log does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves the data related to the log entry identified by id. This returns a single log entry representation as specified in the schema.",
+        "operationId": "get_logs_by_id",
+        "summary": "Get a log event by id"
+      }
+    }
+  },
+  "definitions": {
+    "get_logs_by_id_response": {
+      "properties": {
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_name": {
+          "default": "My application Name",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "date": {
+          "default": "2016-02-23T19:57:29.532Z",
+          "description": "The date when the event was created",
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/get_logs_by_id_response_details"
+        },
+        "ip": {
+          "default": "190.257.209.19",
+          "description": "The IP of the log event source",
+          "type": "string"
+        },
+        "location_info": {
+          "$ref": "#/definitions/get_logs_by_id_response_location_info"
+        },
+        "type": {
+          "default": "sapi",
+          "description": "The log event type",
+          "type": "string"
+        },
+        "user_id": {
+          "default": "auth0|56c75c4e42b6359e98374bc2",
+          "description": "The user's unique identifier",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_logs_by_id_response_details": {
+      "default": {},
+      "description": "Additional (and very useful) details about the event. They don't have a specific schema as they vary based on event type.",
+      "type": "object"
+    },
+    "get_logs_by_id_response_location_info": {
+      "default": {},
+      "description": "Additional details about the event's ip trace location. If the ip matches either as private or localhost it returns an empty object.",
+      "type": "object"
+    },
+    "get_logs_response": {
+      "properties": {
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_name": {
+          "default": "My application Name",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "date": {
+          "default": "2016-02-23T19:57:29.532Z",
+          "description": "The date when the event was created",
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/get_logs_response_details"
+        },
+        "ip": {
+          "default": "190.257.209.19",
+          "description": "The IP of the log event source",
+          "type": "string"
+        },
+        "location_info": {
+          "$ref": "#/definitions/get_logs_response_location_info"
+        },
+        "type": {
+          "default": "sapi",
+          "description": "The log event type",
+          "type": "string"
+        },
+        "user_id": {
+          "default": "auth0|56c75c4e42b6359e98374bc2",
+          "description": "The user's unique identifier",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_logs_response_details": {
+      "default": {},
+      "description": "Additional (and very useful) details about the event. They don't have a specific schema as they vary based on event type.",
+      "type": "object"
+    },
+    "get_logs_response_location_info": {
+      "default": {},
+      "description": "Additional details about the event's ip trace location. If the ip matches either as private or localhost it returns an empty object.",
+      "type": "object"
+    }
+  }
+}

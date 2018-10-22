@@ -1,0 +1,4185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/clients": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          },
+          {
+            "description": "The page number. Zero based.",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "The amount of entries per page. Default: <code>50</code>. Max value: <code>100</code>. If not present, pagination will be disabled",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 0,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "true if a query summary must be included in the result",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "Optionally filter on the global client parameter",
+            "in": "query",
+            "name": "is_global",
+            "type": "boolean"
+          },
+          {
+            "description": "Filter on whether or not a client is a first party client",
+            "in": "query",
+            "name": "is_first_party",
+            "type": "boolean"
+          },
+          {
+            "description": "A comma separated list of application types used to filter the returned clients (native, spa, regular_web, non_interactive, rms, box, cloudbees, concur, dropbox, mscrm, echosign, egnyte, newrelic, office365, salesforce, sentry, sharepoint, slack, springcm, zendesk, zoom)",
+            "in": "query",
+            "name": "app_type",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The clients were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_clients_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Some fields cannot be read with the permissions granted by the bearer token scopes. The message will vary depending on the fields and the scopes."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a list of all client applications. Accepts a list of fields to include or exclude.\n\n<strong>Important:</strong> The <code>client_secret</code> and <code>encryption_key</code> attributes can only be retrieved with the <code>read:client_keys</code> scope.\n",
+        "operationId": "get_clients",
+        "summary": "Get all clients"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_clients_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_clients_response"
+            }
+          },
+          "201": {
+            "description": "The client was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:clients"
+          },
+          "409": {
+            "description": "There is another client with the same alias."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Creates a new client application. The samples on the right show most attributes that can be used. \n\nWe recommend to let us to generate a safe secret for you, but you can also provide your own with the <code>client_secret</code> parameter\n",
+        "operationId": "post_clients",
+        "summary": "Create a client"
+      }
+    },
+    "/api/v2/clients/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The client was deleted."
+          },
+          "400": {
+            "description": "Global client cannot be deleted"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:clients"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Deletes a client and all its related assets (like rules, connections, etc) given its id.",
+        "operationId": "delete_clients_by_id",
+        "summary": "Delete a client"
+      },
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The client was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_clients_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Some fields cannot be read with the permissions granted by the bearer token scopes. The message will vary depending on the fields and the scopes."
+          },
+          "404": {
+            "description": "The client does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a client by its id.\n\n<strong>Important:</strong> The <code>client_secret</code> <code>encryption_key</code> and <code>signing_keys</code> attributes can only be retrieved with the <code>read:client_keys</code> scope.\n",
+        "operationId": "get_clients_by_id",
+        "summary": "Get a client"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_clients_by_id_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The client was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_clients_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Some fields cannot be updated with the permissions granted by the bearer token scopes. The message will vary depending on the fields and the scopes."
+          },
+          "404": {
+            "description": "The client does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "<strong>Important:</strong> The <code>client_secret</code> and <code>encryption_key</code> attributes can only be updated with the <code>update:client_keys</code> scope.\n",
+        "operationId": "patch_clients_by_id",
+        "summary": "Update a client"
+      }
+    },
+    "/api/v2/clients/{id}/rotate-secret": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client to rotate secrets",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The secret was rotated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/post_rotate-secret_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Some fields cannot be updated with the permissions granted by the bearer token scopes. The message will vary depending on the fields and the scopes."
+          },
+          "404": {
+            "description": "The client does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Rotate a client secret. The generated secret is <strong>NOT</strong> base64 encoded.\n",
+        "operationId": "post_rotate-secret",
+        "summary": "Rotate a client secret"
+      }
+    }
+  },
+  "definitions": {
+    "get_clients_by_id_response": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/get_clients_by_id_response_addons"
+        },
+        "allowed_clients": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_logout_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "The URLs that Auth0 can use to as a callback for the client",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/get_clients_by_id_response_client_metadata"
+        },
+        "client_secret": {
+          "default": "MG_TNT2ver-SylNat-_VeMmd-4m0Waba0jr1troztBniSChEw0glxEmgEi2Kw40H",
+          "description": "The client secret, it must not be public",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "default": true,
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to true",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/get_clients_by_id_response_encryption_key"
+        },
+        "form_template": {
+          "type": "string"
+        },
+        "is_first_party": {
+          "default": false,
+          "description": "Whether this client a first party client or not",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/get_clients_by_id_response_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/get_clients_by_id_response_mobile"
+        },
+        "name": {
+          "default": "My application",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "signing_keys": {
+          "description": "Client signing keys.",
+          "items": {
+            "properties": {
+              "cert": {
+                "description": "Signing public key.",
+                "type": "string"
+              },
+              "pkcs7": {
+                "description": "Signing public key (PKCS#7 format).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sso": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "default": false,
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "default": "none",
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_addons": {
+      "default": {},
+      "type": "object"
+    },
+    "get_clients_by_id_response_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "get_clients_by_id_response_encryption_key": {
+      "properties": {
+        "cert": {
+          "type": "string"
+        },
+        "pub": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_jwt_configuration": {
+      "description": "Configuration related to JWTs for the client",
+      "properties": {
+        "alg": {
+          "default": "HS256",
+          "description": "Algorithm uses to sign JWTs",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "default": 36000,
+          "description": "The amount of seconds the JWT will be valid (affects <code>exp</code> claim)",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        },
+        "secret_encoded": {
+          "default": true,
+          "description": "<code>true</code> if the client secret is base64 encoded, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_by_id_response_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "get_clients_response": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/get_clients_response_addons"
+        },
+        "allowed_clients": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_logout_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "The URLs that Auth0 can use to as a callback for the client",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/get_clients_response_client_metadata"
+        },
+        "client_secret": {
+          "default": "MG_TNT2ver-SylNat-_VeMmd-4m0Waba0jr1troztBniSChEw0glxEmgEi2Kw40H",
+          "description": "The client secret, it must not be public",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "default": true,
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to true",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/get_clients_response_encryption_key"
+        },
+        "form_template": {
+          "type": "string"
+        },
+        "is_first_party": {
+          "default": false,
+          "description": "Whether this client a first party client or not",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/get_clients_response_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/get_clients_response_mobile"
+        },
+        "name": {
+          "default": "My application",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "signing_keys": {
+          "description": "Client signing keys.",
+          "items": {
+            "properties": {
+              "cert": {
+                "description": "Signing public key.",
+                "type": "string"
+              },
+              "pkcs7": {
+                "description": "Signing public key (PKCS#7 format).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sso": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "default": false,
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "default": "none",
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_addons": {
+      "default": {},
+      "type": "object"
+    },
+    "get_clients_response_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "get_clients_response_encryption_key": {
+      "properties": {
+        "cert": {
+          "type": "string"
+        },
+        "pub": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_jwt_configuration": {
+      "description": "Configuration related to JWTs for the client",
+      "properties": {
+        "alg": {
+          "default": "HS256",
+          "description": "Algorithm uses to sign JWTs",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "default": 36000,
+          "description": "The amount of seconds the JWT will be valid (affects <code>exp</code> claim)",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        },
+        "secret_encoded": {
+          "default": true,
+          "description": "<code>true</code> if the client secret is base64 encoded, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "get_clients_response_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/patch_clients_by_id_body_addons"
+        },
+        "allowed_clients": {
+          "description": "Ids of clients that will be allowed to perform delegation requests. Clients that will be allowed to make delegation request. By default, all your clients will be allowed. This field allows you to specify specific clients",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "allowed_logout_urls": {
+          "description": "A set of URLs that are valid to redirect to after logout from Auth0",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "allowed_origins": {
+          "description": "A set of URLs that represents valid origins for CORS",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "enum": [
+            "native",
+            "spa",
+            "regular_web",
+            "non_interactive",
+            "rms",
+            "box",
+            "cloudbees",
+            "concur",
+            "dropbox",
+            "mscrm",
+            "echosign",
+            "egnyte",
+            "newrelic",
+            "office365",
+            "salesforce",
+            "sentry",
+            "sharepoint",
+            "slack",
+            "springcm",
+            "zendesk",
+            "zoom"
+          ],
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "A set of URLs that are valid to call back from Auth0 when authenticating users",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "client_aliases": {
+          "description": "List of audiences for SAML protocol",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/patch_clients_by_id_body_client_metadata"
+        },
+        "client_secret": {
+          "description": "The secret used to sign tokens for the client",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url-or-null",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "description": "The content (HTML, CSS, JS) of the custom login page",
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise.",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/patch_clients_by_id_body_encryption_key"
+        },
+        "form_template": {
+          "description": "Form template for WS-Federation protocol",
+          "type": "string"
+        },
+        "grant_types": {
+          "description": "A set of grant types that the client is authorized to use",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/patch_clients_by_id_body_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/patch_clients_by_id_body_mobile"
+        },
+        "name": {
+          "description": "The name of the client. Must contain at least one character. Does not allow '<' or '>'.",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "sso": {
+          "description": "<code>true</code> to use Auth0 instead of the IdP to do Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_addons": {
+      "description": "The addons for the client",
+      "properties": {
+        "aws": {
+          "default": {},
+          "properties": {
+            "principal": {
+              "description": "For example: 'arn:aws:iam::010616021751:saml-provider/idpname'",
+              "type": "string"
+            },
+            "role": {
+              "description": "For example: 'arn:aws:iam::010616021751:role/foo'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "azure_blob": {
+          "default": {},
+          "properties": {
+            "accountName": {
+              "description": "Your Azure storage account name. Just enter the first segment of the storage URL: http://<strong>YOUR ACCOUNT NAME</strong>.blob.core.windows.net",
+              "type": "string"
+            },
+            "blobName": {
+              "description": "The entity you want to request a token for: e.g. 'my-blob'. If left blank, the computed SAS will apply to the entire storage container",
+              "type": "string"
+            },
+            "blob_delete": {
+              "description": "Indicates that the issued token has permission to delete the blob",
+              "type": "boolean"
+            },
+            "blob_read": {
+              "description": "Indicates that the issued token has permission to read the content, properties, metadata and block list. Use the blob as the source of a copy operation",
+              "type": "boolean"
+            },
+            "blob_write": {
+              "description": "Indicates that the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+              "type": "boolean"
+            },
+            "containerName": {
+              "description": "The container you want to request a token for: e.g. 'my-container'",
+              "type": "string"
+            },
+            "container_delete": {
+              "description": "Indicates that the issued token has permission to delete any blob in the container",
+              "type": "boolean"
+            },
+            "container_list": {
+              "description": "Indicates that the issued token has permission to list blobs in the container",
+              "type": "boolean"
+            },
+            "container_read": {
+              "description": "Indicates that the issued token has permission to read the content, properties, metadata or block list of any blob in the container. Use any blob in the container as the source of a copy operation",
+              "type": "boolean"
+            },
+            "container_write": {
+              "description": "Indicates that for any blob in the container the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+              "type": "boolean"
+            },
+            "expiration": {
+              "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "signedIdentifier": {
+              "description": "The shared access policy identifier defined in your storage account resource",
+              "type": "string"
+            },
+            "storageAccessKey": {
+              "description": "The storage account access key associated storage account",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "azure_sb": {
+          "default": {},
+          "properties": {
+            "entityPath": {
+              "description": "The entity you want to request a token for, for example: 'my-queue'",
+              "type": "string"
+            },
+            "expiration": {
+              "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+              "type": "integer"
+            },
+            "namespace": {
+              "description": "Your Azure Service Bus namespace. The first segment of the Service Bus URL: http://YOUR_NAMESPACE.servicebus.windows.net",
+              "type": "string"
+            },
+            "sasKey": {
+              "description": "The Primary Key associated with the shared access policy",
+              "type": "string"
+            },
+            "sasKeyName": {
+              "description": "The shared access policy name defined in your Service Bus entity",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "box": {
+          "default": {},
+          "type": "object"
+        },
+        "cloudbees": {
+          "default": {},
+          "type": "object"
+        },
+        "concur": {
+          "default": {},
+          "type": "object"
+        },
+        "dropbox": {
+          "default": {},
+          "type": "object"
+        },
+        "echosign": {
+          "default": {},
+          "type": "object"
+        },
+        "egnyte": {
+          "default": {},
+          "type": "object"
+        },
+        "firebase": {
+          "default": {},
+          "properties": {
+            "client_email": {
+              "description": "The ID of the Service Account you have created (SDK 3+)",
+              "type": "string"
+            },
+            "lifetime_in_seconds": {
+              "description": "Lifespan of the Token in seconds (SDK 3+)",
+              "type": "integer"
+            },
+            "private_key": {
+              "description": "The Private Key for signing the token. (SDK 3+)",
+              "type": "string"
+            },
+            "private_key_id": {
+              "description": "Optional. ID of the private key (SDK 3+)",
+              "type": "string"
+            },
+            "secret": {
+              "description": "Firebase's secret",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "layer": {
+          "default": {},
+          "properties": {
+            "expiration": {
+              "description": "An optional expiration in minutes for the generated token. By default it will be 5 minutes",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "keyId": {
+              "description": "The Authentication Key identifier used to sign the Layer token",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property used as the unique user id in Layer. If none is specified user_id will be used",
+              "type": "string"
+            },
+            "privateKey": {
+              "description": "The private key for signing the Layer token",
+              "type": "string"
+            },
+            "providerId": {
+              "description": "The Provider ID of your Layer account",
+              "type": "string"
+            }
+          },
+          "required": [
+            "providerId",
+            "keyId",
+            "privateKey"
+          ],
+          "type": "object"
+        },
+        "mscrm": {
+          "default": {},
+          "properties": {
+            "url": {
+              "description": "Microsoft Dynamics CRM application URL.",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "type": "object"
+        },
+        "newrelic": {
+          "default": {},
+          "type": "object"
+        },
+        "office365": {
+          "default": {},
+          "type": "object"
+        },
+        "rms": {
+          "default": {},
+          "properties": {
+            "url": {
+              "description": "This is the URL of your Rights Management Server. It can be internal or external, but users will have to be able to reach it.",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "type": "object"
+        },
+        "salesforce": {
+          "default": {},
+          "properties": {
+            "entity_id": {
+              "description": "The arbitrary logical URL that identifies the Saleforce resource. The format has to be 'https://whatever.com'",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "salesforce_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "The Consumer Key assigned by Salesforce to the Connected App",
+              "type": "string"
+            },
+            "communityName": {
+              "description": "The community name",
+              "type": "string"
+            },
+            "community_url_section": {
+              "description": "The community url section",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "salesforce_sandbox_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "The Consumer Key assigned by Salesforce to the Connected App",
+              "type": "string"
+            },
+            "communityName": {
+              "description": "The community name",
+              "type": "string"
+            },
+            "community_url_section": {
+              "description": "The community url section",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "samlp": {
+          "default": {},
+          "properties": {
+            "audience": {
+              "type": "string"
+            },
+            "authnContextClassRef": {
+              "type": "string"
+            },
+            "createUpnClaim": {
+              "type": "boolean"
+            },
+            "destination": {
+              "type": "string"
+            },
+            "digestAlgorithm": {
+              "type": "string"
+            },
+            "issuer": {
+              "type": "string"
+            },
+            "lifetimeInSeconds": {
+              "type": "integer"
+            },
+            "mapIdentities": {
+              "type": "boolean"
+            },
+            "mapUnknownClaimsAsIs": {
+              "type": "boolean"
+            },
+            "mappings": {
+              "type": "object"
+            },
+            "nameIdentifierFormat": {
+              "type": "string"
+            },
+            "nameIdentifierProbes": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "passthroughClaimsWithNoMapping": {
+              "type": "boolean"
+            },
+            "recipient": {
+              "type": "string"
+            },
+            "signResponse": {
+              "type": "boolean"
+            },
+            "signatureAlgorithm": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "sap_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "Your SAP client ID",
+              "type": "string"
+            },
+            "nameIdentifierFormat": {
+              "description": "The NameID element of the Subject can be used to express the user's identity",
+              "type": "string"
+            },
+            "scope": {
+              "description": "The requested scope for SAP APIs",
+              "type": "string"
+            },
+            "servicePassword": {
+              "description": "API calls to the token endpoint are authenticated with this password. Usually from a service account",
+              "type": "string"
+            },
+            "tokenEndpointUrl": {
+              "description": "Your SAP OData server OAuth2 Token Endpoint URL",
+              "format": "url",
+              "type": "string"
+            },
+            "usernameAttribute": {
+              "description": "The name of the property in the user object that maps to a SAP username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "sentry": {
+          "default": {},
+          "type": "object"
+        },
+        "sharepoint": {
+          "default": {},
+          "type": "object"
+        },
+        "slack": {
+          "default": {},
+          "properties": {
+            "team": {
+              "description": "Slack team name.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "team"
+          ],
+          "type": "object"
+        },
+        "springcm": {
+          "default": {},
+          "type": "object"
+        },
+        "wams": {
+          "default": {},
+          "properties": {
+            "masterkey": {
+              "description": "The Windows Azure Mobile Services's master key",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "wsfed": {
+          "default": {},
+          "type": "object"
+        },
+        "zendesk": {
+          "default": {},
+          "type": "object"
+        },
+        "zoom": {
+          "default": {},
+          "properties": {
+            "account": {
+              "description": "The first segment of your Vanity URL, for example: 'https://{account}.zoom.us'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_aws": {
+      "default": {},
+      "properties": {
+        "principal": {
+          "description": "For example: 'arn:aws:iam::010616021751:saml-provider/idpname'",
+          "type": "string"
+        },
+        "role": {
+          "description": "For example: 'arn:aws:iam::010616021751:role/foo'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_azure_blob": {
+      "default": {},
+      "properties": {
+        "accountName": {
+          "description": "Your Azure storage account name. Just enter the first segment of the storage URL: http://<strong>YOUR ACCOUNT NAME</strong>.blob.core.windows.net",
+          "type": "string"
+        },
+        "blobName": {
+          "description": "The entity you want to request a token for: e.g. 'my-blob'. If left blank, the computed SAS will apply to the entire storage container",
+          "type": "string"
+        },
+        "blob_delete": {
+          "description": "Indicates that the issued token has permission to delete the blob",
+          "type": "boolean"
+        },
+        "blob_read": {
+          "description": "Indicates that the issued token has permission to read the content, properties, metadata and block list. Use the blob as the source of a copy operation",
+          "type": "boolean"
+        },
+        "blob_write": {
+          "description": "Indicates that the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+          "type": "boolean"
+        },
+        "containerName": {
+          "description": "The container you want to request a token for: e.g. 'my-container'",
+          "type": "string"
+        },
+        "container_delete": {
+          "description": "Indicates that the issued token has permission to delete any blob in the container",
+          "type": "boolean"
+        },
+        "container_list": {
+          "description": "Indicates that the issued token has permission to list blobs in the container",
+          "type": "boolean"
+        },
+        "container_read": {
+          "description": "Indicates that the issued token has permission to read the content, properties, metadata or block list of any blob in the container. Use any blob in the container as the source of a copy operation",
+          "type": "boolean"
+        },
+        "container_write": {
+          "description": "Indicates that for any blob in the container the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+          "type": "boolean"
+        },
+        "expiration": {
+          "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "signedIdentifier": {
+          "description": "The shared access policy identifier defined in your storage account resource",
+          "type": "string"
+        },
+        "storageAccessKey": {
+          "description": "The storage account access key associated storage account",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_azure_sb": {
+      "default": {},
+      "properties": {
+        "entityPath": {
+          "description": "The entity you want to request a token for, for example: 'my-queue'",
+          "type": "string"
+        },
+        "expiration": {
+          "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+          "type": "integer"
+        },
+        "namespace": {
+          "description": "Your Azure Service Bus namespace. The first segment of the Service Bus URL: http://YOUR_NAMESPACE.servicebus.windows.net",
+          "type": "string"
+        },
+        "sasKey": {
+          "description": "The Primary Key associated with the shared access policy",
+          "type": "string"
+        },
+        "sasKeyName": {
+          "description": "The shared access policy name defined in your Service Bus entity",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_box": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "patch_clients_by_id_body_cloudbees": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_concur": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_dropbox": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_echosign": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_egnyte": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_encryption_key": {
+      "description": "The client's encryption key",
+      "properties": {
+        "cert": {
+          "description": "Encryption certificate",
+          "type": "string"
+        },
+        "pub": {
+          "description": "Encryption public key",
+          "type": "string"
+        },
+        "subject": {
+          "description": "Certificate subject",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_firebase": {
+      "default": {},
+      "properties": {
+        "client_email": {
+          "description": "The ID of the Service Account you have created (SDK 3+)",
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "description": "Lifespan of the Token in seconds (SDK 3+)",
+          "type": "integer"
+        },
+        "private_key": {
+          "description": "The Private Key for signing the token. (SDK 3+)",
+          "type": "string"
+        },
+        "private_key_id": {
+          "description": "Optional. ID of the private key (SDK 3+)",
+          "type": "string"
+        },
+        "secret": {
+          "description": "Firebase's secret",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_jwt_configuration": {
+      "description": "An object that holds settings related to how JWTs are created",
+      "properties": {
+        "alg": {
+          "description": "The algorithm used to sign the JsonWebToken",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "description": "The amount of time (in seconds) that the token will be valid after being issued",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_layer": {
+      "default": {},
+      "properties": {
+        "expiration": {
+          "description": "An optional expiration in minutes for the generated token. By default it will be 5 minutes",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "keyId": {
+          "description": "The Authentication Key identifier used to sign the Layer token",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property used as the unique user id in Layer. If none is specified user_id will be used",
+          "type": "string"
+        },
+        "privateKey": {
+          "description": "The private key for signing the Layer token",
+          "type": "string"
+        },
+        "providerId": {
+          "description": "The Provider ID of your Layer account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "providerId",
+        "keyId",
+        "privateKey"
+      ],
+      "type": "object"
+    },
+    "patch_clients_by_id_body_mappings": {
+      "type": "object"
+    },
+    "patch_clients_by_id_body_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_mscrm": {
+      "default": {},
+      "properties": {
+        "url": {
+          "description": "Microsoft Dynamics CRM application URL.",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "patch_clients_by_id_body_newrelic": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_office365": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_rms": {
+      "default": {},
+      "properties": {
+        "url": {
+          "description": "This is the URL of your Rights Management Server. It can be internal or external, but users will have to be able to reach it.",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "patch_clients_by_id_body_salesforce": {
+      "default": {},
+      "properties": {
+        "entity_id": {
+          "description": "The arbitrary logical URL that identifies the Saleforce resource. The format has to be 'https://whatever.com'",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_salesforce_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "The Consumer Key assigned by Salesforce to the Connected App",
+          "type": "string"
+        },
+        "communityName": {
+          "description": "The community name",
+          "type": "string"
+        },
+        "community_url_section": {
+          "description": "The community url section",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_salesforce_sandbox_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "The Consumer Key assigned by Salesforce to the Connected App",
+          "type": "string"
+        },
+        "communityName": {
+          "description": "The community name",
+          "type": "string"
+        },
+        "community_url_section": {
+          "description": "The community url section",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_samlp": {
+      "default": {},
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "authnContextClassRef": {
+          "type": "string"
+        },
+        "createUpnClaim": {
+          "type": "boolean"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "digestAlgorithm": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "lifetimeInSeconds": {
+          "type": "integer"
+        },
+        "mapIdentities": {
+          "type": "boolean"
+        },
+        "mapUnknownClaimsAsIs": {
+          "type": "boolean"
+        },
+        "mappings": {
+          "type": "object"
+        },
+        "nameIdentifierFormat": {
+          "type": "string"
+        },
+        "nameIdentifierProbes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "passthroughClaimsWithNoMapping": {
+          "type": "boolean"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "signResponse": {
+          "type": "boolean"
+        },
+        "signatureAlgorithm": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_sap_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "Your SAP client ID",
+          "type": "string"
+        },
+        "nameIdentifierFormat": {
+          "description": "The NameID element of the Subject can be used to express the user's identity",
+          "type": "string"
+        },
+        "scope": {
+          "description": "The requested scope for SAP APIs",
+          "type": "string"
+        },
+        "servicePassword": {
+          "description": "API calls to the token endpoint are authenticated with this password. Usually from a service account",
+          "type": "string"
+        },
+        "tokenEndpointUrl": {
+          "description": "Your SAP OData server OAuth2 Token Endpoint URL",
+          "format": "url",
+          "type": "string"
+        },
+        "usernameAttribute": {
+          "description": "The name of the property in the user object that maps to a SAP username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_sentry": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_sharepoint": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_slack": {
+      "default": {},
+      "properties": {
+        "team": {
+          "description": "Slack team name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "team"
+      ],
+      "type": "object"
+    },
+    "patch_clients_by_id_body_springcm": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_wams": {
+      "default": {},
+      "properties": {
+        "masterkey": {
+          "description": "The Windows Azure Mobile Services's master key",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_body_wsfed": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_zendesk": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_body_zoom": {
+      "default": {},
+      "properties": {
+        "account": {
+          "description": "The first segment of your Vanity URL, for example: 'https://{account}.zoom.us'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/patch_clients_by_id_response_addons"
+        },
+        "allowed_clients": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_logout_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "The URLs that Auth0 can use to as a callback for the client",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/patch_clients_by_id_response_client_metadata"
+        },
+        "client_secret": {
+          "default": "MG_TNT2ver-SylNat-_VeMmd-4m0Waba0jr1troztBniSChEw0glxEmgEi2Kw40H",
+          "description": "The client secret, it must not be public",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "default": true,
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to true",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/patch_clients_by_id_response_encryption_key"
+        },
+        "form_template": {
+          "type": "string"
+        },
+        "is_first_party": {
+          "default": false,
+          "description": "Whether this client a first party client or not",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/patch_clients_by_id_response_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/patch_clients_by_id_response_mobile"
+        },
+        "name": {
+          "default": "My application",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "signing_keys": {
+          "description": "Client signing keys.",
+          "items": {
+            "properties": {
+              "cert": {
+                "description": "Signing public key.",
+                "type": "string"
+              },
+              "pkcs7": {
+                "description": "Signing public key (PKCS#7 format).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sso": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "default": false,
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "default": "none",
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_addons": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_clients_by_id_response_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "patch_clients_by_id_response_encryption_key": {
+      "properties": {
+        "cert": {
+          "type": "string"
+        },
+        "pub": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_jwt_configuration": {
+      "description": "Configuration related to JWTs for the client",
+      "properties": {
+        "alg": {
+          "default": "HS256",
+          "description": "Algorithm uses to sign JWTs",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "default": 36000,
+          "description": "The amount of seconds the JWT will be valid (affects <code>exp</code> claim)",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        },
+        "secret_encoded": {
+          "default": true,
+          "description": "<code>true</code> if the client secret is base64 encoded, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_clients_by_id_response_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/post_clients_body_addons"
+        },
+        "allowed_clients": {
+          "description": "Ids of clients that will be allowed to perform delegation requests. Clients that will be allowed to make delegation request. By default, all your clients will be allowed. This field allows you to specify specific clients",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "allowed_logout_urls": {
+          "description": "A set of URLs that are valid to redirect to after logout from Auth0",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "allowed_origins": {
+          "description": "A set of URLs that represents valid origins for CORS",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "enum": [
+            "native",
+            "spa",
+            "regular_web",
+            "non_interactive",
+            "rms",
+            "box",
+            "cloudbees",
+            "concur",
+            "dropbox",
+            "mscrm",
+            "echosign",
+            "egnyte",
+            "newrelic",
+            "office365",
+            "salesforce",
+            "sentry",
+            "sharepoint",
+            "slack",
+            "springcm",
+            "zendesk",
+            "zoom"
+          ],
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "A set of URLs that are valid to call back from Auth0 when authenticating users",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "client_aliases": {
+          "description": "List of audiences for SAML protocol",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/post_clients_body_client_metadata"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "description": "The content (HTML, CSS, JS) of the custom login page",
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/post_clients_body_encryption_key"
+        },
+        "form_template": {
+          "description": "Form template for WS-Federation protocol",
+          "type": "string"
+        },
+        "grant_types": {
+          "description": "A set of grant types that the client is authorized to use",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "is_heroku_app": {
+          "description": "<code>true</code> if the client is a heroku application, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/post_clients_body_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/post_clients_body_mobile"
+        },
+        "name": {
+          "description": "The name of the client. Must contain at least one character. Does not allow '<' or '>'",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "sso": {
+          "description": "<code>true</code> to use Auth0 instead of the IdP to do Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "post_clients_body_addons": {
+      "description": "The addons for the client",
+      "properties": {
+        "aws": {
+          "default": {},
+          "properties": {
+            "principal": {
+              "description": "For example: 'arn:aws:iam::010616021751:saml-provider/idpname'",
+              "type": "string"
+            },
+            "role": {
+              "description": "For example: 'arn:aws:iam::010616021751:role/foo'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "azure_blob": {
+          "default": {},
+          "properties": {
+            "accountName": {
+              "description": "Your Azure storage account name. Just enter the first segment of the storage URL: http://<strong>YOUR ACCOUNT NAME</strong>.blob.core.windows.net",
+              "type": "string"
+            },
+            "blobName": {
+              "description": "The entity you want to request a token for: e.g. 'my-blob'. If left blank, the computed SAS will apply to the entire storage container",
+              "type": "string"
+            },
+            "blob_delete": {
+              "description": "Indicates that the issued token has permission to delete the blob",
+              "type": "boolean"
+            },
+            "blob_read": {
+              "description": "Indicates that the issued token has permission to read the content, properties, metadata and block list. Use the blob as the source of a copy operation",
+              "type": "boolean"
+            },
+            "blob_write": {
+              "description": "Indicates that the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+              "type": "boolean"
+            },
+            "containerName": {
+              "description": "The container you want to request a token for: e.g. 'my-container'",
+              "type": "string"
+            },
+            "container_delete": {
+              "description": "Indicates that the issued token has permission to delete any blob in the container",
+              "type": "boolean"
+            },
+            "container_list": {
+              "description": "Indicates that the issued token has permission to list blobs in the container",
+              "type": "boolean"
+            },
+            "container_read": {
+              "description": "Indicates that the issued token has permission to read the content, properties, metadata or block list of any blob in the container. Use any blob in the container as the source of a copy operation",
+              "type": "boolean"
+            },
+            "container_write": {
+              "description": "Indicates that for any blob in the container the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+              "type": "boolean"
+            },
+            "expiration": {
+              "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "signedIdentifier": {
+              "description": "The shared access policy identifier defined in your storage account resource",
+              "type": "string"
+            },
+            "storageAccessKey": {
+              "description": "The storage account access key associated storage account",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "azure_sb": {
+          "default": {},
+          "properties": {
+            "entityPath": {
+              "description": "The entity you want to request a token for, for example: 'my-queue'",
+              "type": "string"
+            },
+            "expiration": {
+              "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+              "type": "integer"
+            },
+            "namespace": {
+              "description": "Your Azure Service Bus namespace. The first segment of the Service Bus URL: http://YOUR_NAMESPACE.servicebus.windows.net",
+              "type": "string"
+            },
+            "sasKey": {
+              "description": "The Primary Key associated with the shared access policy",
+              "type": "string"
+            },
+            "sasKeyName": {
+              "description": "The shared access policy name defined in your Service Bus entity",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "box": {
+          "default": {},
+          "type": "object"
+        },
+        "cloudbees": {
+          "default": {},
+          "type": "object"
+        },
+        "concur": {
+          "default": {},
+          "type": "object"
+        },
+        "dropbox": {
+          "default": {},
+          "type": "object"
+        },
+        "echosign": {
+          "default": {},
+          "type": "object"
+        },
+        "egnyte": {
+          "default": {},
+          "type": "object"
+        },
+        "firebase": {
+          "default": {},
+          "properties": {
+            "client_email": {
+              "description": "The ID of the Service Account you have created (SDK 3+)",
+              "type": "string"
+            },
+            "lifetime_in_seconds": {
+              "description": "Lifespan of the Token in seconds (SDK 3+)",
+              "type": "integer"
+            },
+            "private_key": {
+              "description": "The Private Key for signing the token. (SDK 3+)",
+              "type": "string"
+            },
+            "private_key_id": {
+              "description": "Optional. ID of the private key (SDK 3+)",
+              "type": "string"
+            },
+            "secret": {
+              "description": "Firebase's secret",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "layer": {
+          "default": {},
+          "properties": {
+            "expiration": {
+              "description": "An optional expiration in minutes for the generated token. By default it will be 5 minutes",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "keyId": {
+              "description": "The Authentication Key identifier used to sign the Layer token",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property used as the unique user id in Layer. If none is specified user_id will be used",
+              "type": "string"
+            },
+            "privateKey": {
+              "description": "The private key for signing the Layer token",
+              "type": "string"
+            },
+            "providerId": {
+              "description": "The Provider ID of your Layer account",
+              "type": "string"
+            }
+          },
+          "required": [
+            "providerId",
+            "keyId",
+            "privateKey"
+          ],
+          "type": "object"
+        },
+        "mscrm": {
+          "default": {},
+          "properties": {
+            "url": {
+              "description": "Microsoft Dynamics CRM application URL.",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "type": "object"
+        },
+        "newrelic": {
+          "default": {},
+          "type": "object"
+        },
+        "office365": {
+          "default": {},
+          "type": "object"
+        },
+        "rms": {
+          "default": {},
+          "properties": {
+            "url": {
+              "description": "This is the URL of your Rights Management Server. It can be internal or external, but users will have to be able to reach it.",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "type": "object"
+        },
+        "salesforce": {
+          "default": {},
+          "properties": {
+            "entity_id": {
+              "description": "The arbitrary logical URL that identifies the Saleforce resource. The format has to be 'https://whatever.com'",
+              "format": "url",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "salesforce_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "The Consumer Key assigned by Salesforce to the Connected App",
+              "type": "string"
+            },
+            "communityName": {
+              "description": "The community name",
+              "type": "string"
+            },
+            "community_url_section": {
+              "description": "The community url section",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "salesforce_sandbox_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "The Consumer Key assigned by Salesforce to the Connected App",
+              "type": "string"
+            },
+            "communityName": {
+              "description": "The community name",
+              "type": "string"
+            },
+            "community_url_section": {
+              "description": "The community url section",
+              "type": "string"
+            },
+            "principal": {
+              "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "samlp": {
+          "default": {},
+          "properties": {
+            "audience": {
+              "type": "string"
+            },
+            "authnContextClassRef": {
+              "type": "string"
+            },
+            "createUpnClaim": {
+              "type": "boolean"
+            },
+            "destination": {
+              "type": "string"
+            },
+            "digestAlgorithm": {
+              "type": "string"
+            },
+            "issuer": {
+              "type": "string"
+            },
+            "lifetimeInSeconds": {
+              "type": "integer"
+            },
+            "mapIdentities": {
+              "type": "boolean"
+            },
+            "mapUnknownClaimsAsIs": {
+              "type": "boolean"
+            },
+            "mappings": {
+              "type": "object"
+            },
+            "nameIdentifierFormat": {
+              "type": "string"
+            },
+            "nameIdentifierProbes": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "passthroughClaimsWithNoMapping": {
+              "type": "boolean"
+            },
+            "recipient": {
+              "type": "string"
+            },
+            "signResponse": {
+              "type": "boolean"
+            },
+            "signatureAlgorithm": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "sap_api": {
+          "default": {},
+          "properties": {
+            "clientid": {
+              "description": "Your SAP client ID",
+              "type": "string"
+            },
+            "nameIdentifierFormat": {
+              "description": "The NameID element of the Subject can be used to express the user's identity",
+              "type": "string"
+            },
+            "scope": {
+              "description": "The requested scope for SAP APIs",
+              "type": "string"
+            },
+            "servicePassword": {
+              "description": "API calls to the token endpoint are authenticated with this password. Usually from a service account",
+              "type": "string"
+            },
+            "tokenEndpointUrl": {
+              "description": "Your SAP OData server OAuth2 Token Endpoint URL",
+              "format": "url",
+              "type": "string"
+            },
+            "usernameAttribute": {
+              "description": "The name of the property in the user object that maps to a SAP username, for example: 'email'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "sentry": {
+          "default": {},
+          "type": "object"
+        },
+        "sharepoint": {
+          "default": {},
+          "type": "object"
+        },
+        "slack": {
+          "default": {},
+          "properties": {
+            "team": {
+              "description": "Slack team name.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "team"
+          ],
+          "type": "object"
+        },
+        "springcm": {
+          "default": {},
+          "type": "object"
+        },
+        "wams": {
+          "default": {},
+          "properties": {
+            "masterkey": {
+              "description": "The Windows Azure Mobile Services's master key",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "wsfed": {
+          "default": {},
+          "type": "object"
+        },
+        "zendesk": {
+          "default": {},
+          "type": "object"
+        },
+        "zoom": {
+          "default": {},
+          "properties": {
+            "account": {
+              "description": "The first segment of your Vanity URL, for example: 'https://{account}.zoom.us'",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_aws": {
+      "default": {},
+      "properties": {
+        "principal": {
+          "description": "For example: 'arn:aws:iam::010616021751:saml-provider/idpname'",
+          "type": "string"
+        },
+        "role": {
+          "description": "For example: 'arn:aws:iam::010616021751:role/foo'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_azure_blob": {
+      "default": {},
+      "properties": {
+        "accountName": {
+          "description": "Your Azure storage account name. Just enter the first segment of the storage URL: http://<strong>YOUR ACCOUNT NAME</strong>.blob.core.windows.net",
+          "type": "string"
+        },
+        "blobName": {
+          "description": "The entity you want to request a token for: e.g. 'my-blob'. If left blank, the computed SAS will apply to the entire storage container",
+          "type": "string"
+        },
+        "blob_delete": {
+          "description": "Indicates that the issued token has permission to delete the blob",
+          "type": "boolean"
+        },
+        "blob_read": {
+          "description": "Indicates that the issued token has permission to read the content, properties, metadata and block list. Use the blob as the source of a copy operation",
+          "type": "boolean"
+        },
+        "blob_write": {
+          "description": "Indicates that the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+          "type": "boolean"
+        },
+        "containerName": {
+          "description": "The container you want to request a token for: e.g. 'my-container'",
+          "type": "string"
+        },
+        "container_delete": {
+          "description": "Indicates that the issued token has permission to delete any blob in the container",
+          "type": "boolean"
+        },
+        "container_list": {
+          "description": "Indicates that the issued token has permission to list blobs in the container",
+          "type": "boolean"
+        },
+        "container_read": {
+          "description": "Indicates that the issued token has permission to read the content, properties, metadata or block list of any blob in the container. Use any blob in the container as the source of a copy operation",
+          "type": "boolean"
+        },
+        "container_write": {
+          "description": "Indicates that for any blob in the container the issued token has permission to create or write content, properties, metadata, or block list. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation within the same account",
+          "type": "boolean"
+        },
+        "expiration": {
+          "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "signedIdentifier": {
+          "description": "The shared access policy identifier defined in your storage account resource",
+          "type": "string"
+        },
+        "storageAccessKey": {
+          "description": "The storage account access key associated storage account",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_azure_sb": {
+      "default": {},
+      "properties": {
+        "entityPath": {
+          "description": "The entity you want to request a token for, for example: 'my-queue'",
+          "type": "string"
+        },
+        "expiration": {
+          "description": "Expiration in minutes for the generated token. Default: 5 minutes",
+          "type": "integer"
+        },
+        "namespace": {
+          "description": "Your Azure Service Bus namespace. The first segment of the Service Bus URL: http://YOUR_NAMESPACE.servicebus.windows.net",
+          "type": "string"
+        },
+        "sasKey": {
+          "description": "The Primary Key associated with the shared access policy",
+          "type": "string"
+        },
+        "sasKeyName": {
+          "description": "The shared access policy name defined in your Service Bus entity",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_box": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "post_clients_body_cloudbees": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_concur": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_dropbox": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_echosign": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_egnyte": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_encryption_key": {
+      "description": "The client's encryption key",
+      "properties": {
+        "cert": {
+          "description": "Encryption certificate",
+          "type": "string"
+        },
+        "pub": {
+          "description": "Encryption public key",
+          "type": "string"
+        },
+        "subject": {
+          "description": "Certificate subject",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_firebase": {
+      "default": {},
+      "properties": {
+        "client_email": {
+          "description": "The ID of the Service Account you have created (SDK 3+)",
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "description": "Lifespan of the Token in seconds (SDK 3+)",
+          "type": "integer"
+        },
+        "private_key": {
+          "description": "The Private Key for signing the token. (SDK 3+)",
+          "type": "string"
+        },
+        "private_key_id": {
+          "description": "Optional. ID of the private key (SDK 3+)",
+          "type": "string"
+        },
+        "secret": {
+          "description": "Firebase's secret",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_jwt_configuration": {
+      "description": "An object that holds settings related to how JWTs are created",
+      "properties": {
+        "alg": {
+          "description": "The algorithm used to sign the JsonWebToken",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "description": "The amount of time (in seconds) that the token will be valid after being issued",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_layer": {
+      "default": {},
+      "properties": {
+        "expiration": {
+          "description": "An optional expiration in minutes for the generated token. By default it will be 5 minutes",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "keyId": {
+          "description": "The Authentication Key identifier used to sign the Layer token",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property used as the unique user id in Layer. If none is specified user_id will be used",
+          "type": "string"
+        },
+        "privateKey": {
+          "description": "The private key for signing the Layer token",
+          "type": "string"
+        },
+        "providerId": {
+          "description": "The Provider ID of your Layer account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "providerId",
+        "keyId",
+        "privateKey"
+      ],
+      "type": "object"
+    },
+    "post_clients_body_mappings": {
+      "type": "object"
+    },
+    "post_clients_body_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_mscrm": {
+      "default": {},
+      "properties": {
+        "url": {
+          "description": "Microsoft Dynamics CRM application URL.",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "post_clients_body_newrelic": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_office365": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_rms": {
+      "default": {},
+      "properties": {
+        "url": {
+          "description": "This is the URL of your Rights Management Server. It can be internal or external, but users will have to be able to reach it.",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "post_clients_body_salesforce": {
+      "default": {},
+      "properties": {
+        "entity_id": {
+          "description": "The arbitrary logical URL that identifies the Saleforce resource. The format has to be 'https://whatever.com'",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_salesforce_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "The Consumer Key assigned by Salesforce to the Connected App",
+          "type": "string"
+        },
+        "communityName": {
+          "description": "The community name",
+          "type": "string"
+        },
+        "community_url_section": {
+          "description": "The community url section",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_salesforce_sandbox_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "The Consumer Key assigned by Salesforce to the Connected App",
+          "type": "string"
+        },
+        "communityName": {
+          "description": "The community name",
+          "type": "string"
+        },
+        "community_url_section": {
+          "description": "The community url section",
+          "type": "string"
+        },
+        "principal": {
+          "description": "The name of the property in the user object that maps to a Salesforce username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_samlp": {
+      "default": {},
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "authnContextClassRef": {
+          "type": "string"
+        },
+        "createUpnClaim": {
+          "type": "boolean"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "digestAlgorithm": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "lifetimeInSeconds": {
+          "type": "integer"
+        },
+        "mapIdentities": {
+          "type": "boolean"
+        },
+        "mapUnknownClaimsAsIs": {
+          "type": "boolean"
+        },
+        "mappings": {
+          "type": "object"
+        },
+        "nameIdentifierFormat": {
+          "type": "string"
+        },
+        "nameIdentifierProbes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "passthroughClaimsWithNoMapping": {
+          "type": "boolean"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "signResponse": {
+          "type": "boolean"
+        },
+        "signatureAlgorithm": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_sap_api": {
+      "default": {},
+      "properties": {
+        "clientid": {
+          "description": "Your SAP client ID",
+          "type": "string"
+        },
+        "nameIdentifierFormat": {
+          "description": "The NameID element of the Subject can be used to express the user's identity",
+          "type": "string"
+        },
+        "scope": {
+          "description": "The requested scope for SAP APIs",
+          "type": "string"
+        },
+        "servicePassword": {
+          "description": "API calls to the token endpoint are authenticated with this password. Usually from a service account",
+          "type": "string"
+        },
+        "tokenEndpointUrl": {
+          "description": "Your SAP OData server OAuth2 Token Endpoint URL",
+          "format": "url",
+          "type": "string"
+        },
+        "usernameAttribute": {
+          "description": "The name of the property in the user object that maps to a SAP username, for example: 'email'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_sentry": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_sharepoint": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_slack": {
+      "default": {},
+      "properties": {
+        "team": {
+          "description": "Slack team name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "team"
+      ],
+      "type": "object"
+    },
+    "post_clients_body_springcm": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_wams": {
+      "default": {},
+      "properties": {
+        "masterkey": {
+          "description": "The Windows Azure Mobile Services's master key",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_body_wsfed": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_zendesk": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_body_zoom": {
+      "default": {},
+      "properties": {
+        "account": {
+          "description": "The first segment of your Vanity URL, for example: 'https://{account}.zoom.us'",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/post_clients_response_addons"
+        },
+        "allowed_clients": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_logout_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "The URLs that Auth0 can use to as a callback for the client",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/post_clients_response_client_metadata"
+        },
+        "client_secret": {
+          "default": "MG_TNT2ver-SylNat-_VeMmd-4m0Waba0jr1troztBniSChEw0glxEmgEi2Kw40H",
+          "description": "The client secret, it must not be public",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "default": true,
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to true",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/post_clients_response_encryption_key"
+        },
+        "form_template": {
+          "type": "string"
+        },
+        "is_first_party": {
+          "default": false,
+          "description": "Whether this client a first party client or not",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/post_clients_response_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/post_clients_response_mobile"
+        },
+        "name": {
+          "default": "My application",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "signing_keys": {
+          "description": "Client signing keys.",
+          "items": {
+            "properties": {
+              "cert": {
+                "description": "Signing public key.",
+                "type": "string"
+              },
+              "pkcs7": {
+                "description": "Signing public key (PKCS#7 format).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sso": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "default": false,
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "default": "none",
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_addons": {
+      "default": {},
+      "type": "object"
+    },
+    "post_clients_response_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "post_clients_response_encryption_key": {
+      "properties": {
+        "cert": {
+          "type": "string"
+        },
+        "pub": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_jwt_configuration": {
+      "description": "Configuration related to JWTs for the client",
+      "properties": {
+        "alg": {
+          "default": "HS256",
+          "description": "Algorithm uses to sign JWTs",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "default": 36000,
+          "description": "The amount of seconds the JWT will be valid (affects <code>exp</code> claim)",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        },
+        "secret_encoded": {
+          "default": true,
+          "description": "<code>true</code> if the client secret is base64 encoded, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_clients_response_scopes": {
+      "default": {},
+      "type": "object"
+    },
+    "post_rotate-secret_response": {
+      "properties": {
+        "addons": {
+          "$ref": "#/definitions/post_rotate-secret_response_addons"
+        },
+        "allowed_clients": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_logout_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "app_type": {
+          "description": "The type of application this client represents",
+          "type": "string"
+        },
+        "callbacks": {
+          "description": "The URLs that Auth0 can use to as a callback for the client",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "client_id": {
+          "default": "AaiyAPdpYdesoKnqjj8HJqRn4T5titww",
+          "description": "The id of the client",
+          "type": "string"
+        },
+        "client_metadata": {
+          "$ref": "#/definitions/post_rotate-secret_response_client_metadata"
+        },
+        "client_secret": {
+          "default": "MG_TNT2ver-SylNat-_VeMmd-4m0Waba0jr1troztBniSChEw0glxEmgEi2Kw40H",
+          "description": "The client secret, it must not be public",
+          "type": "string"
+        },
+        "cross_origin_auth": {
+          "description": "<code>true</code> if this client can be used to make cross-origin authentication requests, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "cross_origin_loc": {
+          "description": "Url fo the location in your site where the cross origin verification takes place for the cross-origin auth flow when performing Auth in your own domain instead of Auth0 hosted login page.",
+          "format": "url",
+          "type": "string"
+        },
+        "custom_login_page": {
+          "type": "string"
+        },
+        "custom_login_page_on": {
+          "default": true,
+          "description": "<code>true</code> if the custom login page is to be used, <code>false</code> otherwise. Defaults to true",
+          "type": "boolean"
+        },
+        "custom_login_page_preview": {
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text description of the purpose of the Client. (Max character length: <code>140</code>)",
+          "type": "string"
+        },
+        "encryption_key": {
+          "$ref": "#/definitions/post_rotate-secret_response_encryption_key"
+        },
+        "form_template": {
+          "type": "string"
+        },
+        "is_first_party": {
+          "default": false,
+          "description": "Whether this client a first party client or not",
+          "type": "boolean"
+        },
+        "jwt_configuration": {
+          "$ref": "#/definitions/post_rotate-secret_response_jwt_configuration"
+        },
+        "logo_uri": {
+          "description": "The URL of the client logo (recommended size: 150x150)",
+          "type": "string"
+        },
+        "mobile": {
+          "$ref": "#/definitions/post_rotate-secret_response_mobile"
+        },
+        "name": {
+          "default": "My application",
+          "description": "The name of the client",
+          "type": "string"
+        },
+        "oidc_conformant": {
+          "default": false,
+          "description": "Whether this client will conform to strict OIDC specifications",
+          "type": "boolean"
+        },
+        "signing_keys": {
+          "description": "Client signing keys.",
+          "items": {
+            "properties": {
+              "cert": {
+                "description": "Signing public key.",
+                "type": "string"
+              },
+              "pkcs7": {
+                "description": "Signing public key (PKCS#7 format).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sso": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sso_disabled": {
+          "default": false,
+          "description": "<code>true</code> to disable Single Sign On, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "token_endpoint_auth_method": {
+          "default": "none",
+          "description": "Defines the requested authentication method for the token endpoint. Possible values are 'none' (public client without a client secret), 'client_secret_post' (client uses HTTP POST parameters) or 'client_secret_basic' (client uses HTTP Basic)",
+          "enum": [
+            "none",
+            "client_secret_post",
+            "client_secret_basic"
+          ],
+          "type": "string"
+        },
+        "web_origins": {
+          "description": "A set of URLs that represents valid web origins for use with web message response mode",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_addons": {
+      "default": {},
+      "type": "object"
+    },
+    "post_rotate-secret_response_android": {
+      "default": {
+        "app_package_name": "com.example",
+        "sha256_cert_fingerprints": [
+          "D8:A0:83:..."
+        ]
+      },
+      "description": "Configuration related to Android native apps",
+      "properties": {
+        "app_package_name": {
+          "description": "Application package name found in <code>AndroidManifest.xml</code>",
+          "type": "string"
+        },
+        "sha256_cert_fingerprints": {
+          "default": [],
+          "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_client_metadata": {
+      "description": "Metadata associated with the client, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "post_rotate-secret_response_encryption_key": {
+      "properties": {
+        "cert": {
+          "type": "string"
+        },
+        "pub": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_ios": {
+      "default": {
+        "app_bundle_identifier": "com.my.bundle.id",
+        "team_id": "9JA89QQLNQ"
+      },
+      "description": "Configuration related to iOS native apps",
+      "properties": {
+        "app_bundle_identifier": {
+          "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "Identifier assigned to the account that signs and upload the app to the store",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_jwt_configuration": {
+      "description": "Configuration related to JWTs for the client",
+      "properties": {
+        "alg": {
+          "default": "HS256",
+          "description": "Algorithm uses to sign JWTs",
+          "enum": [
+            "HS256",
+            "RS256"
+          ],
+          "type": "string"
+        },
+        "lifetime_in_seconds": {
+          "default": 36000,
+          "description": "The amount of seconds the JWT will be valid (affects <code>exp</code> claim)",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": {},
+          "type": "object"
+        },
+        "secret_encoded": {
+          "default": true,
+          "description": "<code>true</code> if the client secret is base64 encoded, <code>false</code> otherwise. Defaults to <code>true</code>",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_mobile": {
+      "description": "Configuration related to native mobile apps",
+      "properties": {
+        "android": {
+          "default": {
+            "app_package_name": "com.example",
+            "sha256_cert_fingerprints": [
+              "D8:A0:83:..."
+            ]
+          },
+          "description": "Configuration related to Android native apps",
+          "properties": {
+            "app_package_name": {
+              "description": "Application package name found in <code>AndroidManifest.xml</code>",
+              "type": "string"
+            },
+            "sha256_cert_fingerprints": {
+              "default": [],
+              "description": "The SHA256 fingerprints of your app's signing certificate. Multiple fingerprints can be used to support different versions of your app, such as debug and production builds",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "ios": {
+          "default": {
+            "app_bundle_identifier": "com.my.bundle.id",
+            "team_id": "9JA89QQLNQ"
+          },
+          "description": "Configuration related to iOS native apps",
+          "properties": {
+            "app_bundle_identifier": {
+              "description": "Assigned by the developer to the app as its unique identifier inside the store, usually is a reverse domain plus the app name: <code>com.you.MyApp</code>",
+              "type": "string"
+            },
+            "team_id": {
+              "description": "Identifier assigned to the account that signs and upload the app to the store",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_rotate-secret_response_scopes": {
+      "default": {},
+      "type": "object"
+    }
+  }
+}

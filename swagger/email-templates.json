@@ -1,0 +1,679 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/email-templates": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_email-templates_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The template was created. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/post_email-templates_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "Insufficient scope, expected: create:email_templates."
+          },
+          "409": {
+            "description": "Template (templateName) already exists."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "post_email-templates",
+        "summary": "Create an email template"
+      }
+    },
+    "/api/v2/email-templates/{templateName}": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+            "enum": [
+              "verify_email",
+              "reset_email",
+              "welcome_email",
+              "blocked_account",
+              "stolen_credentials",
+              "enrollment_email",
+              "mfa_oob_code",
+              "change_password",
+              "password_reset"
+            ],
+            "in": "path",
+            "name": "templateName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The template was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_email-templates_by_templateName_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "Insufficient scope, expected: read:email_templates."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "get_email-templates_by_templateName",
+        "summary": "Get an email template"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+            "enum": [
+              "verify_email",
+              "reset_email",
+              "welcome_email",
+              "blocked_account",
+              "stolen_credentials",
+              "enrollment_email",
+              "mfa_oob_code",
+              "change_password",
+              "password_reset"
+            ],
+            "in": "path",
+            "name": "templateName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_email-templates_by_templateName_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The template was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_email-templates_by_templateName_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "Insufficient scope, expected: update:email_templates."
+          },
+          "404": {
+            "description": "The template does not exist and cannot be updated."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "patch_email-templates_by_templateName",
+        "summary": "Patch an email template"
+      },
+      "put": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+            "enum": [
+              "verify_email",
+              "reset_email",
+              "welcome_email",
+              "blocked_account",
+              "stolen_credentials",
+              "enrollment_email",
+              "mfa_oob_code",
+              "change_password",
+              "password_reset"
+            ],
+            "in": "path",
+            "name": "templateName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/put_email-templates_by_templateName_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The template was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/put_email-templates_by_templateName_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation."
+          },
+          "403": {
+            "description": "Insufficient scope, expected: update:email_templates."
+          },
+          "404": {
+            "description": "The template does not exist and cannot be updated."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "put_email-templates_by_templateName",
+        "summary": "Update an email template"
+      }
+    }
+  },
+  "definitions": {
+    "get_email-templates_by_templateName_response": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "patch_email-templates_by_templateName_body": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "patch_email-templates_by_templateName_response": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "post_email-templates_body": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "template",
+        "body",
+        "from",
+        "subject",
+        "syntax",
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "post_email-templates_response": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "template",
+        "body",
+        "from",
+        "subject",
+        "syntax",
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "put_email-templates_by_templateName_body": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "template",
+        "body",
+        "from",
+        "subject",
+        "syntax",
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "put_email-templates_by_templateName_response": {
+      "properties": {
+        "body": {
+          "description": "The body of the template.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether or not the template is enabled.",
+          "type": "boolean"
+        },
+        "from": {
+          "default": "sender@auth0.com",
+          "description": "The sender of the email.",
+          "type": "string"
+        },
+        "includeEmailInRedirect": {
+          "description": "Whether or not we include the email as part of the returnUrl in the reset_email",
+          "type": "boolean"
+        },
+        "resultUrl": {
+          "description": "The URL to redirect the user to after a successful action.",
+          "type": "string"
+        },
+        "subject": {
+          "description": "The subject of the email.",
+          "type": "string"
+        },
+        "syntax": {
+          "default": "liquid",
+          "description": "The syntax of the template body.",
+          "type": "string"
+        },
+        "template": {
+          "default": "verify_email",
+          "description": "The template name (verify_email, reset_email, welcome_email, blocked_account, stolen_credentials, enrollment_email, mfa_oob_code, <s>change_password</s> (legacy), <s>password_reset</s> (legacy)).",
+          "enum": [
+            "verify_email",
+            "reset_email",
+            "welcome_email",
+            "blocked_account",
+            "stolen_credentials",
+            "enrollment_email",
+            "mfa_oob_code",
+            "change_password",
+            "password_reset"
+          ],
+          "type": "string"
+        },
+        "urlLifetimeInSeconds": {
+          "description": "The lifetime in seconds that the link within the email will be valid for.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "template",
+        "body",
+        "from",
+        "subject",
+        "syntax",
+        "enabled"
+      ],
+      "type": "object"
+    }
+  }
+}

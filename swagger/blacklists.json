@@ -1,0 +1,147 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/blacklists/tokens": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The JWT's aud claim. The client_id of the client for which it was issued",
+            "in": "query",
+            "name": "aud",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tokens were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_tokens_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: blacklist:tokens"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves the <code>jti</code> and <code>aud</code> of all tokens that are blacklisted.\n\nThe <a href=\"https://auth0.com/docs/jwt\">JWT spec</a> provides the <code>jti</code> field as a way to prevent replay attacks. Though Auth0 tokens do not currently return a <code>jti</code>, you can blacklist a <code>jti</code> to prevent a token being used more than X times. In this way you are kind of implementing a nonce (think of the token's signature as the nonce). If a token gets stolen, it should be blacklisted (or the nth token that has been issued after it) and wait for it to expire.\n\n",
+        "operationId": "get_tokens",
+        "summary": "Get all blacklisted tokens"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_tokens_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The token was blacklisted."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "You cannot blacklist tokens for the specified audience. You must own the client."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Adds the token identified by the <code>jti</code> to a blacklist for the tenant.\n\nThe <a href=\"https://auth0.com/docs/jwt\">JWT spec</a> provides the <code>jti</code> field as a way to prevent replay attacks. Though Auth0 tokens do not currently return a <code>jti</code>, you can blacklist a <code>jti</code> to prevent a token being used more than X times. In this way you are kind of implementing a nonce (think of the token's signature as the nonce). If a token gets stolen, it should be blacklisted (or the nth token that has been issued after it) and wait for it to expire.",
+        "operationId": "post_tokens",
+        "summary": "Blacklist a token"
+      }
+    }
+  },
+  "definitions": {
+    "get_tokens_response": {
+      "properties": {
+        "aud": {
+          "description": "The JWT's aud claim. The client_id of the client for which it was issued",
+          "format": "client-id",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The jti of the JWT to blacklist",
+          "type": "string"
+        }
+      },
+      "required": [
+        "jti"
+      ],
+      "type": "object"
+    },
+    "post_tokens_body": {
+      "properties": {
+        "aud": {
+          "description": "The JWT's aud claim. The client_id of the client for which it was issued",
+          "format": "client-id",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The jti of the JWT to blacklist",
+          "type": "string"
+        }
+      },
+      "required": [
+        "jti"
+      ],
+      "type": "object"
+    }
+  }
+}

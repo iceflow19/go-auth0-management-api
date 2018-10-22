@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/rules-configs": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The rules configs keys were retrieved.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_rules-configs_response"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:rules_configs"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Returns only rules config variable keys.  For security, config variable values cannot be retrieved outside rule execution",
+        "operationId": "get_rules-configs",
+        "summary": "Lists the config variable keys for rules"
+      }
+    },
+    "/api/v2/rules-configs/{key}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The key of the rules config to remove (Max length: <code>127</code>)",
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The rules config was removed."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:rules_configs"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Config keys must be of the format <code>^[A-Za-z0-9_\\-@*+:]*$</code>",
+        "operationId": "delete_rules-configs_by_key",
+        "summary": "Removes the rules config for a given key"
+      },
+      "put": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The key of the rules config to set (Max length: <code>127</code>)",
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/put_rules-configs_by_key_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The rules config was set.",
+            "schema": {
+              "$ref": "#/definitions/put_rules-configs_by_key_response"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:rules_configs"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Rules config keys must be of the format <code>^[A-Za-z0-9_\\-@*+:]*$</code>.",
+        "operationId": "put_rules-configs_by_key",
+        "summary": "Sets the rules config for a given key"
+      }
+    }
+  },
+  "definitions": {
+    "get_rules-configs_response": {
+      "properties": {
+        "key": {
+          "default": "MY_RULES_CONFIG_KEY",
+          "description": "The key for a rules config",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "put_rules-configs_by_key_body": {
+      "properties": {
+        "value": {
+          "default": "MY_RULES_CONFIG_VALUE",
+          "description": "The value for the rules config being set.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
+    "put_rules-configs_by_key_response": {
+      "properties": {
+        "key": {
+          "default": "MY_RULES_CONFIG_KEY",
+          "description": "The key for a rules config",
+          "type": "string"
+        },
+        "value": {
+          "default": "MY_RULES_CONFIG_VALUE",
+          "description": "The value for a rules config",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ],
+      "type": "object"
+    }
+  }
+}

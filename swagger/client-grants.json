@@ -1,0 +1,330 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/client-grants": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The amount of entries per page.",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 1,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "The page number. Zero based",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "true if a query summary must be included in the result, false otherwise. Default <code>false</code>.",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "URL Encoded audience of a client grant to filter",
+            "in": "query",
+            "name": "audience",
+            "type": "string"
+          },
+          {
+            "description": "id of a client to filter",
+            "in": "query",
+            "name": "client_id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The client grants were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_client-grants_response"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:client_grants"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Manage your <a href='https://auth0.com/docs/api-auth/grant/client-credentials'>Client Grants</a> (also called Client Credentials Grants). Using Client Grants, your Client can request an Auth0 access token using its credentials (a Client ID and a Client Secret). The access token then represents your Client during API calls.\n\nRefer to <a href='https://auth0.com/docs/api-auth/config/using-the-management-api'>Using the Management API for Setting Up a Client Credentials Grant Scenario</a> for additional information.\n\n\n",
+        "operationId": "get_client-grants",
+        "summary": "Get all client grants"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_client-grants_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "201": {
+            "description": "The client grant was created."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:client_grants"
+          },
+          "404": {
+            "description": "Client not found"
+          },
+          "409": {
+            "description": "A resource server with the same identifier already exists."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "post_client-grants",
+        "summary": "Create a client grant"
+      }
+    },
+    "/api/v2/client-grants/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client grant to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The client grant no longer exists."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:client_grants"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "delete_client-grants_by_id",
+        "summary": "Delete a client grant"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the client grant to modify",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_client-grants_by_id_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The client grant was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_client-grants_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:client_grants"
+          },
+          "404": {
+            "description": "The client grant does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "patch_client-grants_by_id",
+        "summary": "Update a client grant"
+      }
+    }
+  },
+  "definitions": {
+    "get_client-grants_response": {
+      "properties": {
+        "audience": {
+          "description": "The audience.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "The identifier of the client.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the client grant.",
+          "type": "string"
+        },
+        "scope": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "type": "object"
+    },
+    "patch_client-grants_by_id_body": {
+      "properties": {
+        "scope": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "type": "object"
+    },
+    "patch_client-grants_by_id_response": {
+      "properties": {
+        "audience": {
+          "description": "The audience.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "The identifier of the client.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the client grant.",
+          "type": "string"
+        },
+        "scope": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "type": "object"
+    },
+    "post_client-grants_body": {
+      "properties": {
+        "audience": {
+          "description": "The audience.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "The identifier of the client.",
+          "type": "string"
+        },
+        "scope": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "client_id",
+        "audience",
+        "scope"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,518 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/rules": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The page number. Zero based.",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "The amount of entries per page. Default: <code>50</code>. Max value: <code>100</code>. If not present, pagination will be disabled",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 0,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "true if a query summary must be included in the result",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "If provided retrieves rules that match the value, otherwise all rules are retrieved",
+            "in": "query",
+            "name": "enabled",
+            "type": "boolean"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The rule was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_rules_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:rules"
+          },
+          "404": {
+            "description": "The rule does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a list of all rules. Accepts a list of fields to include or exclude.<br/>\nThe <code>enabled</code> parameter can be specified to get enabled or disabled rules.\nThe rule's stage of executing could be set to the following values <code>login_success</code>, <code>login_failure</code> or <code>pre_authorize</code>\n\n<a href=\"https://auth0.com/docs/rules\">Learn more about rules</a>",
+        "operationId": "get_rules",
+        "summary": "Get all rules"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_rules_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_rules_response"
+            }
+          },
+          "201": {
+            "description": "The rule was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:rules"
+          },
+          "409": {
+            "description": "A rule with the same execution stage already exists"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Creates a new rule according to the JSON object received in <code>body</code>\n\nThe samples on the right show you every attribute that could be used. Mandatory attributes are <code>name</code> and <code>script</code>\n\n<a href=\"https://auth0.com/docs/rules#create-a-new-rule-using-the-management-api\">Learn more about creating a rule</a>\n\nNote: Changing a rule's stage of execution from the default <code>login_success</code> can change the rule's function signature to have user omitted.",
+        "operationId": "post_rules",
+        "summary": "Create a rule"
+      }
+    },
+    "/api/v2/rules/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the rule to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The rule no longer exists."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:rules"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "To be used to delete a rule.\n\n<a href=\"https://auth0.com/docs/rules\">Learn more about rules</a>",
+        "operationId": "delete_rules_by_id",
+        "summary": "Delete a rule"
+      },
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the rule to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The rule was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_rules_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:rules"
+          },
+          "404": {
+            "description": "The rule does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a rule by its ID. Accepts a list of fields to include or exclude in the result.\n\n<a href=\"https://auth0.com/docs/rules\">Learn more about rules</a>",
+        "operationId": "get_rules_by_id",
+        "summary": "Get a rule"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the rule to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_rules_by_id_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The rule was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_rules_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:rules"
+          },
+          "404": {
+            "description": "The rule does not exist."
+          },
+          "409": {
+            "description": "A rule with the same name already exists"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Use this endpoint to update an existing rule.\n\n<a href=\"https://auth0.com/docs/rules\">Learn more about rules</a>",
+        "operationId": "patch_rules_by_id",
+        "summary": "Update a rule"
+      }
+    }
+  },
+  "definitions": {
+    "get_rules_by_id_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the connection is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The rule's identifier",
+          "type": "string"
+        },
+        "name": {
+          "default": "rule_1",
+          "description": "The name of the rule",
+          "type": "string"
+        },
+        "order": {
+          "default": 1,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "The code to be executed when the rule runs",
+          "type": "string"
+        },
+        "stage": {
+          "default": "login_success",
+          "description": "The rule's execution stage",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_rules_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the connection is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The rule's identifier",
+          "type": "string"
+        },
+        "name": {
+          "default": "rule_1",
+          "description": "The name of the rule",
+          "type": "string"
+        },
+        "order": {
+          "default": 1,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "The code to be executed when the rule runs",
+          "type": "string"
+        },
+        "stage": {
+          "default": "login_success",
+          "description": "The rule's execution stage",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_rules_by_id_body": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the rule is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "my-rule",
+          "description": "The name of the rule. Can only contain alphanumeric characters, spaces and '-'. Can neither start nor end with '-' or spaces",
+          "type": "string"
+        },
+        "order": {
+          "default": 2,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first. Send <code>null</code> to delete",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "A script that contains the rule's code",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_rules_by_id_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the connection is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The rule's identifier",
+          "type": "string"
+        },
+        "name": {
+          "default": "rule_1",
+          "description": "The name of the rule",
+          "type": "string"
+        },
+        "order": {
+          "default": 1,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "The code to be executed when the rule runs",
+          "type": "string"
+        },
+        "stage": {
+          "default": "login_success",
+          "description": "The rule's execution stage",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_rules_body": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the rule is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "my-rule",
+          "description": "The name of the rule. Can only contain alphanumeric characters, spaces and '-'. Can neither start nor end with '-' or spaces",
+          "type": "string"
+        },
+        "order": {
+          "default": 2,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first. If no order is provided it will automatically be one greater than the current maximum",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "A script that contains the rule's code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "script"
+      ],
+      "type": "object"
+    },
+    "post_rules_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "<code>true</code> if the connection is enabled, <code>false</code> otherwise",
+          "type": "boolean"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The rule's identifier",
+          "type": "string"
+        },
+        "name": {
+          "default": "rule_1",
+          "description": "The name of the rule",
+          "type": "string"
+        },
+        "order": {
+          "default": 1,
+          "description": "The rule's order in relation to other rules. A rule with a lower order than another rule executes first",
+          "type": "number"
+        },
+        "script": {
+          "default": "function (user, context, callback) {\n  callback(null, user, context);\n}",
+          "description": "The code to be executed when the rule runs",
+          "type": "string"
+        },
+        "stage": {
+          "default": "login_success",
+          "description": "The rule's execution stage",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

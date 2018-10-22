@@ -1,0 +1,604 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/tenants/settings": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tenant settings were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_settings_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:tenant_settings"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Use this endpoint to retrieve various settings for a tenant.",
+        "operationId": "get_settings",
+        "summary": "Get tenant settings"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_settings_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tenant settings were updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_settings_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:tenant_settings"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Use this endpoint to update various fields for a tenant. Enter the new settings in a JSON string in the body parameter.",
+        "operationId": "patch_settings",
+        "summary": "Update tenant settings"
+      }
+    }
+  },
+  "definitions": {
+    "get_settings_response": {
+      "properties": {
+        "allowed_logout_urls": {
+          "description": "A set of URLs that are valid to redirect to after logout from Auth0",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "change_password": {
+          "$ref": "#/definitions/get_settings_response_change_password"
+        },
+        "default_audience": {
+          "description": "Default audience for API Authorization",
+          "type": "string"
+        },
+        "default_directory": {
+          "description": "Name of the connection that will be used for password grants at the token endpoint. Only the following connection types are supported: LDAP, AD, Database Connections, Passwordless, Windows Azure Active Directory, ADFS",
+          "type": "string"
+        },
+        "error_page": {
+          "$ref": "#/definitions/get_settings_response_error_page"
+        },
+        "flags": {
+          "$ref": "#/definitions/get_settings_response_flags"
+        },
+        "friendly_name": {
+          "default": "My Company",
+          "description": "The friendly name of the tenant",
+          "type": "string"
+        },
+        "guardian_mfa_page": {
+          "$ref": "#/definitions/get_settings_response_guardian_mfa_page"
+        },
+        "idle_session_lifetime": {
+          "default": 72,
+          "description": "Force a user to login after they have been inactive for the specified number (unit: hours)",
+          "type": "number"
+        },
+        "picture_url": {
+          "default": "https://mycompany.org/logo.png",
+          "description": "The URL of the tenant logo (recommended size: 150x150)",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        },
+        "sandbox_version": {
+          "default": "8",
+          "description": "The selected sandbox version to be used for the extensibility environment",
+          "type": "string"
+        },
+        "sandbox_versions_available": {
+          "default": [
+            "8",
+            "4"
+          ],
+          "description": "A set of available sandbox versions for the extensibility environment",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "session_lifetime": {
+          "default": 168,
+          "description": "Login session lifetime, how long the session will stay valid (unit: hours)",
+          "type": "number"
+        },
+        "support_email": {
+          "default": "support@mycompany.org",
+          "description": "User support email",
+          "format": "email-or-empty",
+          "type": "string"
+        },
+        "support_url": {
+          "default": "https://mycompany.org/support",
+          "description": "User support url",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_settings_response_change_password": {
+      "description": "Change Password page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom change password html, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default change password page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_settings_response_error_page": {
+      "description": "Tenant error page customization",
+      "properties": {
+        "html": {
+          "description": "Replace default error page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        },
+        "show_log_link": {
+          "default": false,
+          "description": "<code>true</code> to show link to log as part of the default error page, <code>false</code> otherwise (default: <code>true</code>)",
+          "type": "boolean"
+        },
+        "url": {
+          "default": "https://mycompany.org/error",
+          "description": "Redirect to specified url instead of show the default error page",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_settings_response_flags": {
+      "description": "Tenant flags",
+      "properties": {
+        "change_pwd_flow_v1": {
+          "default": false,
+          "description": "Enables the first version of the Change Password flow. We've deprecated this option and recommending a safer flow. This flag is only for backwards compatibility",
+          "type": "boolean"
+        },
+        "disable_impersonation": {
+          "default": false,
+          "description": "If set to <code>true</code> all Impersonation functionality is disabled for the Tenant. This is a read-only attribute.",
+          "type": "boolean"
+        },
+        "enable_apis_section": {
+          "default": false,
+          "description": "This flag enables the APIs section.",
+          "type": "boolean"
+        },
+        "enable_client_connections": {
+          "default": true,
+          "description": "This flag determines whether all current connections shall be enabled when a new <code>client</code> is created. Default value is <code>true</code>.",
+          "type": "boolean"
+        },
+        "enable_pipeline2": {
+          "default": true,
+          "description": "This flag enables advanced API Authorization scenarios.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "get_settings_response_guardian_mfa_page": {
+      "description": "Guardian page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom html for Guardian page, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default Guardian page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_body": {
+      "properties": {
+        "allowed_logout_urls": {
+          "description": "A set of URLs that are valid to redirect to after logout from Auth0",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "change_password": {
+          "$ref": "#/definitions/patch_settings_body_change_password"
+        },
+        "default_audience": {
+          "description": "Default audience for API Authorization",
+          "type": "string"
+        },
+        "default_directory": {
+          "description": "Name of the connection that will be used for password grants at the token endpoint. Only the following connection types are supported: LDAP, AD, Database Connections, Passwordless, Windows Azure Active Directory, ADFS",
+          "type": "string"
+        },
+        "error_page": {
+          "$ref": "#/definitions/patch_settings_body_error_page"
+        },
+        "flags": {
+          "$ref": "#/definitions/patch_settings_body_flags"
+        },
+        "friendly_name": {
+          "default": "My Company",
+          "description": "The friendly name of the tenant",
+          "type": "string"
+        },
+        "guardian_mfa_page": {
+          "$ref": "#/definitions/patch_settings_body_guardian_mfa_page"
+        },
+        "idle_session_lifetime": {
+          "default": 72,
+          "description": "Force a user to login after they have been inactive for the specified number (unit: hours)",
+          "maximum": 720,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "picture_url": {
+          "default": "https://mycompany.org/logo.png",
+          "description": "The URL of the tenant logo (recommended size: 150x150)",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        },
+        "sandbox_version": {
+          "default": "8",
+          "description": "The selected sandbox version to be used for the extensibility environment",
+          "type": "string"
+        },
+        "session_lifetime": {
+          "default": 168,
+          "description": "Login session lifetime, how long the session will stay valid (unit: hours)",
+          "maximum": 720,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "support_email": {
+          "default": "support@mycompany.org",
+          "description": "User support email",
+          "format": "email-or-empty",
+          "type": "string"
+        },
+        "support_url": {
+          "default": "https://mycompany.org/support",
+          "description": "User support url",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_body_change_password": {
+      "description": "Change Password page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom change password html, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default change password page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_body_error_page": {
+      "description": "Tenant error page customization",
+      "properties": {
+        "html": {
+          "description": "Replace default error page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        },
+        "show_log_link": {
+          "default": false,
+          "description": "<code>true</code> to show link to log as part of the default error page, <code>false</code> otherwise (default: <code>true</code>)",
+          "type": "boolean"
+        },
+        "url": {
+          "default": "https://mycompany.org/error",
+          "description": "Redirect to specified url instead of show the default error page",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_body_flags": {
+      "description": "Tenant flags",
+      "properties": {
+        "change_pwd_flow_v1": {
+          "description": "Enables the first version of the Change Password flow. We've deprecated this option and recommending a safer flow. This flag is only for backwards compatibility",
+          "enum": [
+            false
+          ],
+          "type": "boolean"
+        },
+        "enable_apis_section": {
+          "description": "This flag enables the API section in the Auth0 Management Dashboard.",
+          "type": "boolean"
+        },
+        "enable_client_connections": {
+          "description": "This flag determines whether all current connections shall be enabled when a new <code>client</code> is created. Default value is <code>true</code>.",
+          "type": "boolean"
+        },
+        "enable_custom_domain_in_emails": {
+          "description": "If enabled, All your email links and urls will use your configured custom domain. If no custom domain is found the email operation will fail.",
+          "type": "boolean"
+        },
+        "enable_dynamic_client_registration": {
+          "description": "This flag enables dynamic client registration.",
+          "type": "boolean"
+        },
+        "enable_pipeline2": {
+          "description": "This flag enables advanced API Authorization scenarios.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_body_guardian_mfa_page": {
+      "description": "Guardian page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom html for Guardian page, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default Guardian page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_response": {
+      "properties": {
+        "allowed_logout_urls": {
+          "description": "A set of URLs that are valid to redirect to after logout from Auth0",
+          "items": {
+            "format": "url",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "change_password": {
+          "$ref": "#/definitions/patch_settings_response_change_password"
+        },
+        "default_audience": {
+          "description": "Default audience for API Authorization",
+          "type": "string"
+        },
+        "default_directory": {
+          "description": "Name of the connection that will be used for password grants at the token endpoint. Only the following connection types are supported: LDAP, AD, Database Connections, Passwordless, Windows Azure Active Directory, ADFS",
+          "type": "string"
+        },
+        "error_page": {
+          "$ref": "#/definitions/patch_settings_response_error_page"
+        },
+        "flags": {
+          "$ref": "#/definitions/patch_settings_response_flags"
+        },
+        "friendly_name": {
+          "default": "My Company",
+          "description": "The friendly name of the tenant",
+          "type": "string"
+        },
+        "guardian_mfa_page": {
+          "$ref": "#/definitions/patch_settings_response_guardian_mfa_page"
+        },
+        "idle_session_lifetime": {
+          "default": 72,
+          "description": "Force a user to login after they have been inactive for the specified number (unit: hours)",
+          "type": "number"
+        },
+        "picture_url": {
+          "default": "https://mycompany.org/logo.png",
+          "description": "The URL of the tenant logo (recommended size: 150x150)",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        },
+        "sandbox_version": {
+          "default": "8",
+          "description": "The selected sandbox version to be used for the extensibility environment",
+          "type": "string"
+        },
+        "sandbox_versions_available": {
+          "default": [
+            "8",
+            "4"
+          ],
+          "description": "A set of available sandbox versions for the extensibility environment",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "session_lifetime": {
+          "default": 168,
+          "description": "Login session lifetime, how long the session will stay valid (unit: hours)",
+          "type": "number"
+        },
+        "support_email": {
+          "default": "support@mycompany.org",
+          "description": "User support email",
+          "format": "email-or-empty",
+          "type": "string"
+        },
+        "support_url": {
+          "default": "https://mycompany.org/support",
+          "description": "User support url",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_response_change_password": {
+      "description": "Change Password page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom change password html, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default change password page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_response_error_page": {
+      "description": "Tenant error page customization",
+      "properties": {
+        "html": {
+          "description": "Replace default error page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        },
+        "show_log_link": {
+          "default": false,
+          "description": "<code>true</code> to show link to log as part of the default error page, <code>false</code> otherwise (default: <code>true</code>)",
+          "type": "boolean"
+        },
+        "url": {
+          "default": "https://mycompany.org/error",
+          "description": "Redirect to specified url instead of show the default error page",
+          "format": "absolute-uri-or-empty",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_response_flags": {
+      "description": "Tenant flags",
+      "properties": {
+        "change_pwd_flow_v1": {
+          "default": false,
+          "description": "Enables the first version of the Change Password flow. We've deprecated this option and recommending a safer flow. This flag is only for backwards compatibility",
+          "type": "boolean"
+        },
+        "disable_impersonation": {
+          "default": false,
+          "description": "If set to <code>true</code> all Impersonation functionality is disabled for the Tenant. This is a read-only attribute.",
+          "type": "boolean"
+        },
+        "enable_apis_section": {
+          "default": false,
+          "description": "This flag enables the APIs section.",
+          "type": "boolean"
+        },
+        "enable_client_connections": {
+          "default": true,
+          "description": "This flag determines whether all current connections shall be enabled when a new <code>client</code> is created. Default value is <code>true</code>.",
+          "type": "boolean"
+        },
+        "enable_pipeline2": {
+          "default": true,
+          "description": "This flag enables advanced API Authorization scenarios.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "patch_settings_response_guardian_mfa_page": {
+      "description": "Guardian page customization",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "description": "<code>true</code> to use the custom html for Guardian page, <code>false</code> otherwise (default: <code>false</code>)",
+          "type": "boolean"
+        },
+        "html": {
+          "description": "Replace default Guardian page with a custom HTML (<a href='https://github.com/Shopify/liquid/wiki/Liquid-for-Designers' target='_new'>Liquid syntax</a> is supported)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

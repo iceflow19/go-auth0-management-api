@@ -1,0 +1,1356 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/connections": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The amount of entries per page. Default: no paging is used, all connections are returned",
+            "in": "query",
+            "maximum": 100,
+            "minimum": 1,
+            "name": "per_page",
+            "type": "integer"
+          },
+          {
+            "description": "The page number. Zero based",
+            "in": "query",
+            "minimum": 0,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "description": "true if a query summary must be included in the result, false otherwise. Default <code>false</code>.",
+            "in": "query",
+            "name": "include_totals",
+            "type": "boolean"
+          },
+          {
+            "description": "Provide strategies to only retrieve connections with such strategies",
+            "in": "query",
+            "items": {
+              "enum": [
+                "ad",
+                "adfs",
+                "amazon",
+                "dropbox",
+                "bitbucket",
+                "aol",
+                "auth0-adldap",
+                "auth0-oidc",
+                "auth0",
+                "baidu",
+                "bitly",
+                "box",
+                "custom",
+                "daccount",
+                "dwolla",
+                "email",
+                "evernote-sandbox",
+                "evernote",
+                "exact",
+                "facebook",
+                "fitbit",
+                "flickr",
+                "github",
+                "google-apps",
+                "google-oauth2",
+                "guardian",
+                "instagram",
+                "ip",
+                "linkedin",
+                "miicard",
+                "oauth1",
+                "oauth2",
+                "office365",
+                "paypal",
+                "paypal-sandbox",
+                "pingfederate",
+                "planningcenter",
+                "renren",
+                "salesforce-community",
+                "salesforce-sandbox",
+                "salesforce",
+                "samlp",
+                "sharepoint",
+                "shopify",
+                "sms",
+                "soundcloud",
+                "thecity-sandbox",
+                "thecity",
+                "thirtysevensignals",
+                "twitter",
+                "untappd",
+                "vkontakte",
+                "waad",
+                "weibo",
+                "windowslive",
+                "wordpress",
+                "yahoo",
+                "yammer",
+                "yandex"
+              ],
+              "type": "string",
+              "uniqueItems": true
+            },
+            "name": "strategy",
+            "type": "array"
+          },
+          {
+            "description": "Provide the name of the connection to retrieve",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The conections were retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_connections_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:connections"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves every connection matching the specified strategy. All connections are retrieved if no strategy is being specified. Accepts a list of fields to include or exclude in the resulting list of connection objects.\n",
+        "operationId": "get_connections",
+        "summary": "Get all connections"
+      },
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_connections_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_connections_response"
+            }
+          },
+          "201": {
+            "description": "The connection was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "Invalid request body. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:connections"
+          },
+          "409": {
+            "description": "A connection with the same name already exists."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Creates a new connection according to the JSON object received in <code>body</code>.<br/> The samples on the right show all available attributes. Mandatory attributes are <code>name</code> and <code>strategy</code>.<br/> Valid Strategy names are: <code>ad</code>, <code>adfs</code>, <code>amazon</code>, <code>dropbox</code>, <code>bitbucket</code>, <code>aol</code>, <code>auth0-adldap</code>, <code>auth0-oidc</code>, <code>auth0</code>, <code>baidu</code>, <code>bitly</code>, <code>box</code>, <code>custom</code>, <code>daccount</code>, <code>dwolla</code>, <code>email</code>, <code>evernote-sandbox</code>, <code>evernote</code>, <code>exact</code>, <code>facebook</code>, <code>fitbit</code>, <code>flickr</code>, <code>github</code>, <code>google-apps</code>, <code>google-oauth2</code>, <code>guardian</code>, <code>instagram</code>, <code>ip</code>, <code>linkedin</code>, <code>miicard</code>, <code>oauth1</code>, <code>oauth2</code>, <code>office365</code>, <code>paypal</code>, <code>paypal-sandbox</code>, <code>pingfederate</code>, <code>planningcenter</code>, <code>renren</code>, <code>salesforce-community</code>, <code>salesforce-sandbox</code>, <code>salesforce</code>, <code>samlp</code>, <code>sharepoint</code>, <code>shopify</code>, <code>sms</code>, <code>soundcloud</code>, <code>thecity-sandbox</code>, <code>thecity</code>, <code>thirtysevensignals</code>, <code>twitter</code>, <code>untappd</code>, <code>vkontakte</code>, <code>waad</code>, <code>weibo</code>, <code>windowslive</code>, <code>wordpress</code>, <code>yahoo</code>, <code>yammer</code>, <code>yandex</code>",
+        "operationId": "post_connections",
+        "summary": "Create a connection"
+      }
+    },
+    "/api/v2/connections/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the connection to delete",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The connection no longer exists."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:connections"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Deletes a connection and all its users.\n",
+        "operationId": "delete_connections_by_id",
+        "summary": "Delete a connection"
+      },
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the connection to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of fields to include or exclude (depending on include_fields) from the result, empty to retrieve all fields",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "<code>true</code> if the fields specified are to be included in the result, <code>false</code> otherwise (defaults to <code>true</code>)",
+            "in": "query",
+            "name": "include_fields",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The connection was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_connections_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request query string. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:connections"
+          },
+          "404": {
+            "description": "The connection does not exist."
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a connection by its <code>ID</code>.\n",
+        "operationId": "get_connections_by_id",
+        "summary": "Get a connection"
+      },
+      "patch": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the connection to retrieve",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patch_connections_by_id_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The connection was updated. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/patch_connections_by_id_response"
+            }
+          },
+          "400": {
+            "description": "This database contains X users. You cannot change \"options.enabledDatabaseCustomization\" setting."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:connections"
+          },
+          "404": {
+            "description": "The connection does not exist"
+          },
+          "409": {
+            "description": "The name/client_id tuple has already been used for another connection"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "<b>Note:</b> if you use the options parameter, the whole options object will be overridden, so ensure that all parameters are present\n",
+        "operationId": "patch_connections_by_id",
+        "summary": "Update a connection"
+      }
+    },
+    "/api/v2/connections/{id}/users": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the connection (currently only database connections are supported)",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The email of the user to delete",
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The user no longer exists."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: delete:users"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Deletes a specified connection user by its email (you cannot delete all users from specific connection). Currently, only Database Connections are supported.\n",
+        "operationId": "delete_users_by_email",
+        "summary": "Delete a connection user"
+      }
+    }
+  },
+  "definitions": {
+    "get_connections_by_id_response": {
+      "properties": {
+        "enabled_clients": {
+          "default": [
+            "avUAvH1pgnZGgAGlv8guZLPoaOnjVJsM",
+            "ScKKdrpyUwfkhOQP6KXItH32INgZf7Rb"
+          ],
+          "description": "The ids of the clients for which the connection is enabled",
+          "items": {
+            "description": "The client id",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The connection's identifier",
+          "type": "string"
+        },
+        "is_domain_connection": {
+          "description": "True if the connection is domain level",
+          "type": "boolean"
+        },
+        "metadata": {
+          "$ref": "#/definitions/get_connections_by_id_response_metadata"
+        },
+        "name": {
+          "default": "My connection",
+          "description": "The name of the connection",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/get_connections_by_id_response_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "strategy": {
+          "default": "auth0",
+          "description": "The type of the connection, related to the identity provider",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_connections_by_id_response_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "get_connections_by_id_response_options": {
+      "default": {},
+      "type": "object"
+    },
+    "get_connections_response": {
+      "properties": {
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The connection's identifier",
+          "type": "string"
+        },
+        "is_domain_connection": {
+          "description": "True if the connection is domain level",
+          "type": "boolean"
+        },
+        "metadata": {
+          "$ref": "#/definitions/get_connections_response_metadata"
+        },
+        "name": {
+          "default": "My connection",
+          "description": "The name of the connection",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/get_connections_response_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "strategy": {
+          "default": "auth0",
+          "description": "The type of the connection, related to the identity provider",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_connections_response_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "get_connections_response_options": {
+      "default": {},
+      "type": "object"
+    },
+    "patch_connections_by_id_body": {
+      "properties": {
+        "enabled_clients": {
+          "description": "The identifiers of the clients for which the connection is to be enabled. If the array is empty or the property is not specified, no clients are enabled",
+          "items": {
+            "default": [],
+            "description": "The client_id of the client to for which the connection is to be enabled",
+            "format": "client-id",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "metadata": {
+          "$ref": "#/definitions/patch_connections_by_id_body_metadata"
+        },
+        "options": {
+          "$ref": "#/definitions/patch_connections_by_id_body_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "patch_connections_by_id_body_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "patch_connections_by_id_body_options": {
+      "default": {},
+      "description": "The connection's options (depend on the connection strategy)",
+      "properties": {
+        "api_enable_users": {
+          "default": true,
+          "type": "boolean"
+        },
+        "basic_profile": {
+          "default": true,
+          "type": "boolean"
+        },
+        "ext_admin": {
+          "type": "boolean"
+        },
+        "ext_agreed_terms": {
+          "type": "boolean"
+        },
+        "ext_assigned_plans": {
+          "type": "boolean"
+        },
+        "ext_groups": {
+          "type": "boolean"
+        },
+        "ext_is_suspended": {
+          "type": "boolean"
+        },
+        "ext_profile": {
+          "type": "boolean"
+        },
+        "passwordPolicy": {
+          "description": "Password strength level",
+          "enum": [
+            "none",
+            "low",
+            "fair",
+            "good",
+            "excellent"
+          ],
+          "type": "string"
+        },
+        "password_complexity_options": {
+          "description": "Password complexity options",
+          "properties": {
+            "min_length": {
+              "description": "Minimum password length",
+              "maximum": 128,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "password_dictionary": {
+          "description": "Options for password dictionary policy",
+          "properties": {
+            "dictionary": {
+              "description": "Custom Password Dictionary. An array of up to 200 entries.",
+              "items": {
+                "description": "Custom Password Dictionary entry. 50 characters max.",
+                "type": "string"
+              },
+              "maxItems": 200,
+              "type": "array"
+            },
+            "enable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "password_history": {
+          "description": "Options for password history policy",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            },
+            "size": {
+              "default": 8,
+              "maximum": 24,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "password_no_personal_info": {
+          "description": "Options for password expiration policy",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "upstream_params": {
+          "description": "Options for adding parameters in the request to the upstream IdP",
+          "type": "object"
+        },
+        "validation": {
+          "description": "Options for validation",
+          "properties": {
+            "username": {
+              "properties": {
+                "max": {
+                  "default": 15,
+                  "maximum": 128,
+                  "type": "integer"
+                },
+                "min": {
+                  "default": 1,
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "max",
+                "min"
+              ],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_connections_by_id_body_password_complexity_options": {
+      "description": "Password complexity options",
+      "properties": {
+        "min_length": {
+          "description": "Minimum password length",
+          "maximum": 128,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "patch_connections_by_id_body_password_dictionary": {
+      "description": "Options for password dictionary policy",
+      "properties": {
+        "dictionary": {
+          "description": "Custom Password Dictionary. An array of up to 200 entries.",
+          "items": {
+            "description": "Custom Password Dictionary entry. 50 characters max.",
+            "type": "string"
+          },
+          "maxItems": 200,
+          "type": "array"
+        },
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "patch_connections_by_id_body_password_expiration": {
+      "description": "Options for password expiration policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "expire_after": {
+          "default": 90,
+          "maximum": 365,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "warn_after": {
+          "maximum": 365,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "patch_connections_by_id_body_password_history": {
+      "description": "Options for password history policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "size": {
+          "default": 8,
+          "maximum": 24,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "patch_connections_by_id_body_password_no_personal_info": {
+      "description": "Options for password expiration policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "patch_connections_by_id_body_upstream_params": {
+      "description": "Options for adding parameters in the request to the upstream IdP",
+      "type": "object"
+    },
+    "patch_connections_by_id_body_username": {
+      "properties": {
+        "max": {
+          "default": 15,
+          "maximum": 128,
+          "type": "integer"
+        },
+        "min": {
+          "default": 1,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max",
+        "min"
+      ],
+      "type": "object"
+    },
+    "patch_connections_by_id_body_validation": {
+      "description": "Options for validation",
+      "properties": {
+        "username": {
+          "properties": {
+            "max": {
+              "default": 15,
+              "maximum": 128,
+              "type": "integer"
+            },
+            "min": {
+              "default": 1,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "patch_connections_by_id_response": {
+      "properties": {
+        "enabled_clients": {
+          "default": [
+            "avUAvH1pgnZGgAGlv8guZLPoaOnjVJsM",
+            "ScKKdrpyUwfkhOQP6KXItH32INgZf7Rb"
+          ],
+          "description": "The ids of the clients for which the connection is enabled",
+          "items": {
+            "description": "The client id",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The connection's identifier",
+          "type": "string"
+        },
+        "is_domain_connection": {
+          "description": "True if the connection is domain level",
+          "type": "boolean"
+        },
+        "metadata": {
+          "$ref": "#/definitions/patch_connections_by_id_response_metadata"
+        },
+        "name": {
+          "default": "My connection",
+          "description": "The name of the connection",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/patch_connections_by_id_response_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "strategy": {
+          "default": "auth0",
+          "description": "The type of the connection, related to the identity provider",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "patch_connections_by_id_response_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "patch_connections_by_id_response_options": {
+      "default": {},
+      "type": "object"
+    },
+    "post_connections_body": {
+      "properties": {
+        "enabled_clients": {
+          "description": "The identifiers of the clients for which the connection is to be enabled. If the array is empty or the property is not specified, no clients are enabled",
+          "items": {
+            "description": "The id of the client to for which the connection is to be enabled.",
+            "format": "client-id",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "metadata": {
+          "$ref": "#/definitions/post_connections_body_metadata"
+        },
+        "name": {
+          "description": "The name of the connection. Must start and end with an alphanumeric character and can only contain alphanumeric characters and '-'. Max length 128",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/post_connections_body_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "strategy": {
+          "description": "The identity provider identifier for the connection",
+          "enum": [
+            "ad",
+            "adfs",
+            "amazon",
+            "dropbox",
+            "bitbucket",
+            "aol",
+            "auth0-adldap",
+            "auth0-oidc",
+            "auth0",
+            "baidu",
+            "bitly",
+            "box",
+            "custom",
+            "daccount",
+            "dwolla",
+            "email",
+            "evernote-sandbox",
+            "evernote",
+            "exact",
+            "facebook",
+            "fitbit",
+            "flickr",
+            "github",
+            "google-apps",
+            "google-oauth2",
+            "guardian",
+            "instagram",
+            "ip",
+            "linkedin",
+            "miicard",
+            "oauth1",
+            "oauth2",
+            "office365",
+            "paypal",
+            "paypal-sandbox",
+            "pingfederate",
+            "planningcenter",
+            "renren",
+            "salesforce-community",
+            "salesforce-sandbox",
+            "salesforce",
+            "samlp",
+            "sharepoint",
+            "shopify",
+            "sms",
+            "soundcloud",
+            "thecity-sandbox",
+            "thecity",
+            "thirtysevensignals",
+            "twitter",
+            "untappd",
+            "vkontakte",
+            "waad",
+            "weibo",
+            "windowslive",
+            "wordpress",
+            "yahoo",
+            "yammer",
+            "yandex"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "strategy"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "post_connections_body_options": {
+      "description": "The connection's options (depend on the connection strategy)",
+      "properties": {
+        "api_enable_users": {
+          "default": true,
+          "type": "boolean"
+        },
+        "basic_profile": {
+          "default": true,
+          "type": "boolean"
+        },
+        "ext_admin": {
+          "type": "boolean"
+        },
+        "ext_agreed_terms": {
+          "type": "boolean"
+        },
+        "ext_assigned_plans": {
+          "type": "boolean"
+        },
+        "ext_groups": {
+          "type": "boolean"
+        },
+        "ext_is_suspended": {
+          "type": "boolean"
+        },
+        "ext_profile": {
+          "type": "boolean"
+        },
+        "passwordPolicy": {
+          "description": "Password strength level",
+          "enum": [
+            "none",
+            "low",
+            "fair",
+            "good",
+            "excellent"
+          ],
+          "type": "string"
+        },
+        "password_complexity_options": {
+          "description": "Password complexity options",
+          "properties": {
+            "min_length": {
+              "description": "Minimum password length",
+              "maximum": 128,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "password_dictionary": {
+          "description": "Options for password dictionary policy",
+          "properties": {
+            "dictionary": {
+              "description": "Custom Password Dictionary. An array of up to 200 entries.",
+              "items": {
+                "description": "Custom Password Dictionary entry. 50 characters max.",
+                "type": "string"
+              },
+              "maxItems": 200,
+              "type": "array"
+            },
+            "enable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "password_history": {
+          "description": "Options for password history policy",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            },
+            "size": {
+              "default": 8,
+              "maximum": 24,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "password_no_personal_info": {
+          "description": "Options for password expiration policy",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "type": "object"
+        },
+        "upstream_params": {
+          "description": "Options for adding parameters in the request to the upstream IdP",
+          "type": "object"
+        },
+        "validation": {
+          "description": "Options for validation",
+          "properties": {
+            "username": {
+              "properties": {
+                "max": {
+                  "default": 15,
+                  "maximum": 128,
+                  "type": "integer"
+                },
+                "min": {
+                  "default": 1,
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "max",
+                "min"
+              ],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_connections_body_password_complexity_options": {
+      "description": "Password complexity options",
+      "properties": {
+        "min_length": {
+          "description": "Minimum password length",
+          "maximum": 128,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "post_connections_body_password_dictionary": {
+      "description": "Options for password dictionary policy",
+      "properties": {
+        "dictionary": {
+          "description": "Custom Password Dictionary. An array of up to 200 entries.",
+          "items": {
+            "description": "Custom Password Dictionary entry. 50 characters max.",
+            "type": "string"
+          },
+          "maxItems": 200,
+          "type": "array"
+        },
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_password_expiration": {
+      "description": "Options for password expiration policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "expire_after": {
+          "default": 90,
+          "maximum": 365,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "warn_after": {
+          "maximum": 365,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_password_history": {
+      "description": "Options for password history policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "size": {
+          "default": 8,
+          "maximum": 24,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_password_no_personal_info": {
+      "description": "Options for password expiration policy",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_upstream_params": {
+      "description": "Options for adding parameters in the request to the upstream IdP",
+      "type": "object"
+    },
+    "post_connections_body_username": {
+      "properties": {
+        "max": {
+          "default": 15,
+          "maximum": 128,
+          "type": "integer"
+        },
+        "min": {
+          "default": 1,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max",
+        "min"
+      ],
+      "type": "object"
+    },
+    "post_connections_body_validation": {
+      "description": "Options for validation",
+      "properties": {
+        "username": {
+          "properties": {
+            "max": {
+              "default": 15,
+              "maximum": 128,
+              "type": "integer"
+            },
+            "min": {
+              "default": 1,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "post_connections_response": {
+      "properties": {
+        "enabled_clients": {
+          "default": [
+            "avUAvH1pgnZGgAGlv8guZLPoaOnjVJsM",
+            "ScKKdrpyUwfkhOQP6KXItH32INgZf7Rb"
+          ],
+          "description": "The ids of the clients for which the connection is enabled",
+          "items": {
+            "description": "The client id",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "default": "con_0000000000000001",
+          "description": "The connection's identifier",
+          "type": "string"
+        },
+        "is_domain_connection": {
+          "description": "True if the connection is domain level",
+          "type": "boolean"
+        },
+        "metadata": {
+          "$ref": "#/definitions/post_connections_response_metadata"
+        },
+        "name": {
+          "default": "My connection",
+          "description": "The name of the connection",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/post_connections_response_options"
+        },
+        "realms": {
+          "description": "Defines the realms for which the connection will be used (ie: email domains). If the array is empty or the property is not specified, the connection name will be added as realm",
+          "items": {
+            "description": "The realm where this connection belongs",
+            "format": "connection-realm",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "strategy": {
+          "default": "auth0",
+          "description": "The type of the connection, related to the identity provider",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_connections_response_metadata": {
+      "description": "Metadata associated with the connection, in the form of an object with string values (max 255 chars).  Maximum of 10 metadata properties allowed.",
+      "type": "object"
+    },
+    "post_connections_response_options": {
+      "default": {},
+      "type": "object"
+    }
+  }
+}

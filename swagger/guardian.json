@@ -1,0 +1,742 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/guardian/enrollments/ticket": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_ticket_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_ticket_response"
+            }
+          },
+          "204": {
+            "description": "Ticket created"
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          },
+          "404": {
+            "description": "The user does not exist."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Generate an email with a link to start the Guardian enrollment process.",
+        "operationId": "post_ticket",
+        "summary": "Create a Guardian enrollment ticket"
+      }
+    },
+    "/api/v2/guardian/enrollments/{id}": {
+      "delete": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the enrollment that is going to be updated",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          },
+          "204": {
+            "description": "The enrollment no longer exist."
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope (expected delete:enrollment)"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Deletes an enrollment. Useful when you want to force the user to re-enroll with Guardian.",
+        "operationId": "delete_enrollments_by_id",
+        "summary": "Delete a Guardian enrollment"
+      },
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the enrollment that is going to be updated",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succeed.",
+            "schema": {
+              "$ref": "#/definitions/get_enrollments_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves an enrollment. Useful to check its type and related metadata. Note that phone number data is partially obfuscated.",
+        "operationId": "get_enrollments_by_id",
+        "summary": "Get a Guardian enrollment"
+      }
+    },
+    "/api/v2/guardian/factors": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Succeed.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/get_factors_response"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves all factors. Useful to check factor enablement and trial status.",
+        "operationId": "get_factors",
+        "summary": "Get a list of factors and statuses"
+      }
+    },
+    "/api/v2/guardian/factors/push-notification/providers/sns": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns AWS SNS configuration data",
+            "schema": {
+              "$ref": "#/definitions/get_sns_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas"
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Returns provider configuration for AWS SNS.\n\nLearn more about <a href=\"https://auth0.com/docs/multifactor-authentication/developer/sns-configuration\">Configuring Amazon SNS.</a> ",
+        "operationId": "get_sns",
+        "summary": "Get Guardian SNS factor provider configuration"
+      }
+    },
+    "/api/v2/guardian/factors/sms/providers/twilio": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Twilio configuration data",
+            "schema": {
+              "$ref": "#/definitions/get_twilio_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas"
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Returns provider configuration.\n\nLearn more about <a href=\"https://auth0.com/docs/multifactor-authentication/administrator/twilio-configuration\">Configuring Twilio for Guardian.</a> ",
+        "operationId": "get_twilio",
+        "summary": "Get Guardian Twilio factor provider configuration"
+      },
+      "put": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/put_twilio_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Twilio configuration updated",
+            "schema": {
+              "$ref": "#/definitions/put_twilio_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas"
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Useful to configure SMS provider.\n\nLearn more about <a href=\"https://auth0.com/docs/multifactor-authentication/administrator/twilio-configuration\">Configuring Twilio for Guardian.</a> ",
+        "operationId": "put_twilio",
+        "summary": "Update Guardian's Twilio SMS factor provider"
+      }
+    },
+    "/api/v2/guardian/factors/sms/templates": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Succeed.",
+            "schema": {
+              "$ref": "#/definitions/get_templates_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves enrollment and verification templates. You can use this to check the current values for your templates.",
+        "operationId": "get_templates",
+        "summary": "Get enrollment and verification templates"
+      },
+      "put": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/put_templates_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SMS templates was updated",
+            "schema": {
+              "$ref": "#/definitions/put_templates_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Useful to send custom messages on SMS enrollment and verification.",
+        "operationId": "put_templates",
+        "summary": "Update enrollment and verification SMS templates"
+      }
+    },
+    "/api/v2/guardian/factors/{name}": {
+      "put": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "enum": [
+              "push-notification",
+              "sms",
+              "email",
+              "duo",
+              "otp"
+            ],
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/put_factors_by_name_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Factor was updated",
+            "schema": {
+              "$ref": "#/definitions/put_factors_by_name_response"
+            }
+          },
+          "400": {
+            "description": "Invalid input based on schemas."
+          },
+          "401": {
+            "description": "Token has expired or signature is invalid"
+          },
+          "403": {
+            "description": "Insufficient scope"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Useful to enable / disable factor.",
+        "operationId": "put_factors_by_name",
+        "summary": "Update Guardian Factor"
+      }
+    }
+  },
+  "definitions": {
+    "get_enrollments_by_id_response": {
+      "properties": {
+        "enrolled_at": {
+          "default": "2016-07-12T17:56:26.804Z",
+          "description": "Enrollment date",
+          "type": "string"
+        },
+        "id": {
+          "default": "dev_0000000000000001",
+          "description": "Enrollment generated id",
+          "type": "string"
+        },
+        "identifier": {
+          "default": "76dc-a90c-a88c-a90c-a88c-a88c-a90c",
+          "description": "Device identifier (usually phone identifier)",
+          "type": "string"
+        },
+        "last_auth": {
+          "default": "2016-07-12T17:56:26.804Z",
+          "description": "Last authentication date",
+          "type": "string"
+        },
+        "name": {
+          "default": "iPhone 7",
+          "description": "Device name (only Guardian)",
+          "type": "string"
+        },
+        "phone_number": {
+          "default": "+1 999999999999",
+          "description": "Phone number",
+          "type": "string"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "confirmed"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "get_factors_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "States if this factor is enabled",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "sms",
+          "description": "Factor name",
+          "enum": [
+            "sms",
+            "push-notification"
+          ],
+          "type": "string"
+        },
+        "trial_expired": {
+          "default": true,
+          "description": "For factors with trial limits (e.g. SMS) states if those limits have been exceed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "get_sns_response": {
+      "properties": {
+        "aws_access_key_id": {
+          "default": "wywA2BH4VqTpfywiDuyDAYZL3xQjoO40",
+          "type": "string"
+        },
+        "aws_region": {
+          "default": "us-west-1",
+          "type": "string"
+        },
+        "aws_secret_access_key": {
+          "default": "B1ER5JHDGJL3C4sVAKK7SBsq806R3IpL",
+          "type": "string"
+        },
+        "sns_apns_platform_application_arn": {
+          "type": "string"
+        },
+        "sns_gcm_platform_application_arn": {
+          "default": "urn://yRMeBxgcCXh8MeTXPBAxhQnm6gP6f5nP",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "get_templates_response": {
+      "properties": {
+        "enrollment_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}. Please enter this code to verify your enrollment.",
+          "description": "Message sent to the user when they are invited to enroll with a phone number",
+          "type": "string"
+        },
+        "verification_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}",
+          "description": "Message sent to the user when they are prompted to verify their account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enrollment_message",
+        "verification_message"
+      ],
+      "type": "object"
+    },
+    "get_twilio_response": {
+      "properties": {
+        "auth_token": {
+          "default": "zw5Ku6z2sxhd0ZVXto5SDHX6KPDByJPU",
+          "description": "Twilio Authentication token",
+          "type": "string"
+        },
+        "from": {
+          "default": "+1223323",
+          "description": "From number",
+          "type": "string"
+        },
+        "messaging_service_sid": {
+          "default": "5dEkAiHLPCuQ1uJj4qNXcAnERFAL6cpq",
+          "description": "Copilot SID",
+          "type": "string"
+        },
+        "sid": {
+          "default": "wywA2BH4VqTpfywiDuyDAYZL3xQjoO40",
+          "description": "Twilio SID",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_ticket_body": {
+      "properties": {
+        "email": {
+          "description": "alternate email to which the enrollment email will be sent. Optional - by default, the email will be sent to the user's default address",
+          "format": "email",
+          "type": "string"
+        },
+        "send_mail": {
+          "description": "Send an email to the user to start the enrollment",
+          "type": "boolean"
+        },
+        "user_id": {
+          "description": "user_id for the enrollment ticket",
+          "format": "user-id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "post_ticket_response": {
+      "properties": {
+        "ticket_id": {
+          "default": "u2x2-u2x2-u2x2-u2x2-u2x2-u2x2",
+          "description": "The ticket_id used to identify the enrollment",
+          "type": "string"
+        },
+        "ticket_url": {
+          "default": "https://{tenant}.guardian.auth0.com/enrollment?ticket_id={ticket_id}",
+          "description": "The url you can use to start enrollment",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "put_factors_by_name_body": {
+      "properties": {
+        "enabled": {
+          "description": "States if this factor is enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "put_factors_by_name_response": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "States whether this factor is enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "put_templates_body": {
+      "properties": {
+        "enrollment_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}. Please enter this code to verify your enrollment.",
+          "description": "Message sent to the user when they are invited to enroll with a phone number",
+          "type": "string"
+        },
+        "verification_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}",
+          "description": "Message sent to the user when they are prompted to verify their account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enrollment_message",
+        "verification_message"
+      ],
+      "type": "object"
+    },
+    "put_templates_response": {
+      "properties": {
+        "enrollment_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}. Please enter this code to verify your enrollment.",
+          "description": "Message sent to the user when they are invited to enroll with a phone number",
+          "type": "string"
+        },
+        "verification_message": {
+          "default": "{{code}} is your verification code for {{tenant.friendly_name}}",
+          "description": "Message sent to the user when they are prompted to verify their account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enrollment_message",
+        "verification_message"
+      ],
+      "type": "object"
+    },
+    "put_twilio_body": {
+      "properties": {
+        "auth_token": {
+          "default": "zw5Ku6z2sxhd0ZVXto5SDHX6KPDByJPU",
+          "description": "Twilio Authentication token",
+          "type": "string"
+        },
+        "from": {
+          "default": "+1223323",
+          "description": "From number",
+          "type": "string"
+        },
+        "messaging_service_sid": {
+          "default": "5dEkAiHLPCuQ1uJj4qNXcAnERFAL6cpq",
+          "description": "Copilot SID",
+          "type": "string"
+        },
+        "sid": {
+          "default": "wywA2BH4VqTpfywiDuyDAYZL3xQjoO40",
+          "description": "Twilio SID",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "put_twilio_response": {
+      "properties": {
+        "auth_token": {
+          "default": "zw5Ku6z2sxhd0ZVXto5SDHX6KPDByJPU",
+          "description": "Twilio Authentication token",
+          "type": "string"
+        },
+        "from": {
+          "default": "+1223323",
+          "description": "From number",
+          "type": "string"
+        },
+        "messaging_service_sid": {
+          "default": "5dEkAiHLPCuQ1uJj4qNXcAnERFAL6cpq",
+          "description": "Copilot SID",
+          "type": "string"
+        },
+        "sid": {
+          "default": "wywA2BH4VqTpfywiDuyDAYZL3xQjoO40",
+          "description": "Twilio SID",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

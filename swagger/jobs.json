@@ -1,0 +1,673 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "management.auth0.com",
+    "version": "2"
+  },
+  "host": "management.auth0.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v2/jobs/users-exports": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_users-exports_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_users-exports_response"
+            }
+          },
+          "201": {
+            "description": "The job was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "The connection does not exist"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: read:users"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Export all users to a file using a long running job.",
+        "operationId": "post_users-exports",
+        "summary": "Create job to export users."
+      }
+    },
+    "/api/v2/jobs/users-imports": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "A file containing the users to import",
+            "in": "formData",
+            "name": "users",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "description": "The connection id of the connection to which users will be inserted",
+            "in": "formData",
+            "name": "connection_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Update the user if already exists",
+            "in": "formData",
+            "name": "upsert",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "Customer defined id",
+            "in": "formData",
+            "name": "external_id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "if true, send the completion email to all tenant owners when the job is finished",
+            "in": "formData",
+            "name": "send_completion_email",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_users-imports_response"
+            }
+          },
+          "201": {
+            "description": "The job was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "The connection does not exist"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:users"
+          },
+          "413": {
+            "description": "Payload content length greater than maximum allowed: 512000"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Imports users to a connection from a file using a long running job. <strong>Important:</strong> The documentation for the file format is <a href=https://docs.auth0.com/bulk-import>here</a>.",
+        "operationId": "post_users-imports",
+        "summary": "Create job to import users."
+      }
+    },
+    "/api/v2/jobs/verification-email": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post_verification-email_body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified",
+            "schema": {
+              "$ref": "#/definitions/post_verification-email_response"
+            }
+          },
+          "201": {
+            "description": "The job was created. See <strong>Response Class</strong> below for schema."
+          },
+          "400": {
+            "description": "The connection does not exist"
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: update:users"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Send an email to the specified user that asks them to click a link to verify their email address.\n\n<a href=\"https://auth0.com/docs/email/custom#verification-email\">Learn more about Verification Emails</a> \n\nPlease note that you must have the `Status` toggle enabled for the verification email template for the email to be sent.\n",
+        "operationId": "post_verification-email",
+        "summary": "Send a \"verify email address\" email"
+      }
+    },
+    "/api/v2/jobs/{id}": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded",
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the job",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The job was retrieved. See <strong>Response Class</strong> below for schema.",
+            "schema": {
+              "$ref": "#/definitions/get_jobs_by_id_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:users"
+          },
+          "404": {
+            "description": "The job does not exist"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Retrieves a job. Useful to check its status.",
+        "operationId": "get_jobs_by_id",
+        "summary": "Get a job"
+      }
+    },
+    "/api/v2/jobs/{id}/errors": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded",
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the job",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The job was retrieved. See <strong>Response Class</strong> below for schema."
+          },
+          "204": {
+            "description": "The job was retrieved, but no errors were found."
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:users, create:passwords_checking_job"
+          },
+          "404": {
+            "description": "The job does not exist"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "description": "Use this endpoint to retrieve error details based on the id of the job. See below for possible responses.",
+        "operationId": "get_errors",
+        "summary": "Get failed job error details"
+      }
+    },
+    "/api/v2/jobs/{job_id}/results": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded",
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The id of the job",
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The job results were retrieved.",
+            "schema": {
+              "$ref": "#/definitions/get_results_response"
+            }
+          },
+          "400": {
+            "description": "Invalid request URI. The message will vary depending on the cause."
+          },
+          "401": {
+            "description": "Invalid signature received for JSON Web Token validation"
+          },
+          "403": {
+            "description": "Insufficient scope, expected any of: create:passwords_checking_job"
+          },
+          "404": {
+            "description": "The job results do not exist"
+          },
+          "429": {
+            "description": "Too many requests. Check the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers."
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "operationId": "get_results",
+        "summary": "Gets results of a job"
+      }
+    }
+  },
+  "definitions": {
+    "get_jobs_by_id_response": {
+      "properties": {
+        "connection_id": {
+          "default": "con_0000000000000001",
+          "description": "The id of the connection.",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "The date when the job was created.",
+          "type": "string"
+        },
+        "id": {
+          "default": "job_0000000000000001",
+          "description": "The job's identifier. Useful to retrieve its status",
+          "type": "string"
+        },
+        "location": {
+          "description": "The url to download the result of the job.",
+          "type": "string"
+        },
+        "percentage_done": {
+          "description": "The percentage of the work done so far.",
+          "type": "integer"
+        },
+        "status": {
+          "default": "pending",
+          "description": "The job's status",
+          "type": "string"
+        },
+        "time_left_seconds": {
+          "description": "Estimated amount of time remaining to finish the job.",
+          "type": "integer"
+        },
+        "type": {
+          "default": "users_import",
+          "description": "The type of job",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "status"
+      ],
+      "type": "object"
+    },
+    "get_results_response": {
+      "properties": {
+        "email": {
+          "description": "Provided user email",
+          "type": "string"
+        },
+        "exist": {
+          "description": "Whether user was found",
+          "type": "boolean"
+        },
+        "matched": {
+          "description": "Whether password matched the one provided",
+          "type": "boolean"
+        },
+        "username": {
+          "description": "Provided username",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "post_users-exports_body": {
+      "properties": {
+        "connection_id": {
+          "default": "con_0000000000000001",
+          "description": "The connection id of the connection from which users will be exported",
+          "type": "string"
+        },
+        "fields": {
+          "default": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "export_as": "provider",
+              "name": "identities[0].connection"
+            },
+            {
+              "name": "user_metadata.some_field"
+            }
+          ],
+          "description": "A list of fields to be included in the CSV. If omitted, a set of predefined fields will be exported.",
+          "items": {
+            "properties": {
+              "export_as": {
+                "description": "The title of the column in the exported CSV.",
+                "type": "string"
+              },
+              "name": {
+                "description": "The name of the field in the profile.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          },
+          "maxItems": 30,
+          "type": "array"
+        },
+        "format": {
+          "default": "csv",
+          "description": "The format of the file. Valid values are: \"json\" and \"csv\".",
+          "enum": [
+            "json",
+            "csv"
+          ],
+          "type": "string"
+        },
+        "limit": {
+          "default": 5,
+          "description": "Limit the number of records.",
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "post_users-exports_response": {
+      "properties": {
+        "connection_id": {
+          "default": "con_0000000000000001",
+          "description": "The connection id of the connection from which users will be exported",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "The date when the job was created.",
+          "type": "string"
+        },
+        "fields": {
+          "default": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "export_as": "provider",
+              "name": "identities[0].connection"
+            },
+            {
+              "name": "user_metadata.some_field"
+            }
+          ],
+          "description": "A list of fields to be included in the CSV. If omitted, a set of predefined fields will be exported.",
+          "items": {
+            "properties": {
+              "export_as": {
+                "description": "The title of the column in the exported CSV.",
+                "type": "string"
+              },
+              "name": {
+                "description": "The name of the field in the profile.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          },
+          "maxItems": 30,
+          "type": "array"
+        },
+        "format": {
+          "default": "csv",
+          "description": "The format of the file. Valid values are: \"json\" and \"csv\".",
+          "enum": [
+            "json",
+            "csv"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "default": "job_0000000000000001",
+          "description": "The job's identifier. Useful to retrieve its status",
+          "type": "string"
+        },
+        "limit": {
+          "default": 5,
+          "description": "Limit the number of records.",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "status": {
+          "default": "pending",
+          "description": "The job's status",
+          "type": "string"
+        },
+        "type": {
+          "default": "users_export",
+          "description": "The type of job",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "status",
+        "connection"
+      ],
+      "type": "object"
+    },
+    "post_users-imports_response": {
+      "properties": {
+        "connection_id": {
+          "default": "con_0000000000000001",
+          "description": "The connection id of the connection to which users will be inserted",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "The date when the job was created.",
+          "type": "string"
+        },
+        "external_id": {
+          "description": "Customer defined id",
+          "type": "string"
+        },
+        "id": {
+          "default": "job_0000000000000001",
+          "description": "The job's identifier. Useful to retrieve its status",
+          "type": "string"
+        },
+        "send_completion_email": {
+          "default": true,
+          "description": "if true, send the completion email to all tenant owners when the job is finished",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "pending",
+          "description": "The job's status",
+          "type": "string"
+        },
+        "type": {
+          "default": "users_import",
+          "description": "The type of job",
+          "type": "string"
+        },
+        "upsert": {
+          "default": false,
+          "description": "Update the user if already exists",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "status",
+        "connection"
+      ],
+      "type": "object"
+    },
+    "post_verification-email_body": {
+      "properties": {
+        "client_id": {
+          "description": "The id of the client, if not provided the global one will be used",
+          "format": "client-id",
+          "type": "string"
+        },
+        "user_id": {
+          "default": "google-oauth2|1234",
+          "description": "The user_id of the user to whom the email will be sent",
+          "format": "user-id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "post_verification-email_response": {
+      "properties": {
+        "created_at": {
+          "description": "The date when the job was created.",
+          "type": "string"
+        },
+        "id": {
+          "default": "job_0000000000000001",
+          "description": "The job's identifier. Useful to retrieve its status",
+          "type": "string"
+        },
+        "status": {
+          "default": "completed",
+          "description": "The job's status",
+          "type": "string"
+        },
+        "type": {
+          "default": "verification_email",
+          "description": "The type of job",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "status"
+      ],
+      "type": "object"
+    }
+  }
+}
